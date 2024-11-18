@@ -179,6 +179,8 @@ print(active_mediators)
 #> $which_with_fdr_in_HDMT_package_approved
 #> [1] 1 2 3 4 5 6 7 8 9
 ```
+Our method was able to identify all the active mediators
+
 
 # Competing packages
 
