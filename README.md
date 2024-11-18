@@ -42,25 +42,9 @@ through Bioconductor:
 <https://www.bioconductor.org/packages/release/bioc/html/qvalue.html>
 
 ``` r
-if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-#> Warning: package 'BiocManager' was built under R version 4.3.3
-#> Bioconductor version '3.18' is out-of-date; the current release version '3.20'
-#>   is available with R version '4.4'; see https://bioconductor.org/install
-BiocManager::install("qvalue")
-#> 'getOption("repos")' replaces Bioconductor standard repositories, see
-#> 'help("repositories", package = "BiocManager")' for details.
-#> Replacement repositories:
-#>     CRAN: https://cran.rstudio.com/
-#> Bioconductor version 3.18 (BiocManager 1.30.25), R 4.3.1 (2023-06-16 ucrt)
-#> Warning: package(s) not installed when version(s) same as or greater than current; use
-#>   `force = TRUE` to re-install: 'qvalue'
-#> Installation paths not writeable, unable to update packages
-#>   path: C:/Program Files/R/R-4.3.1/library
-#>   packages:
-#>     boot, cluster, codetools, foreign, KernSmooth, lattice, mgcv, nlme, rpart,
-#>     spatial, survival
-#> Old packages: 'cli', 'fontawesome', 'rlang'
+#if (!require("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+#BiocManager::install("qvalue")
 ```
 
 # Summary of Functions
@@ -145,18 +129,18 @@ ao_result <- app_orth(y, x, chosen_med)
 print("Test statistics for selected mediators:")
 #> [1] "Test statistics for selected mediators:"
 print(ao_result$ts)
-#>  [1] -4.1440145  2.4370064  2.9433927 -4.7247547 -5.0984107  2.7990726
-#>  [7] -6.1042222 -5.1643208 -2.3633393 -0.2800171  0.2995497 -1.3588344
-#> [13] -3.0376229  0.4060232 -1.1739012  0.4506148  1.6929801 -0.4317281
-#> [19]  0.0411413
+#>  [1] -4.16144899  2.44725925  2.95577605 -4.74463252 -5.11986057  2.81084875
+#>  [7] -6.12990370 -5.18604789 -2.37328227 -0.28119519  0.30081000 -1.36455122
+#> [13] -3.05040272  0.40773143 -1.17884000  0.45251066  1.70010273 -0.43354450
+#> [19]  0.04131438
 
 print("P-values for selected mediators:")
 #> [1] "P-values for selected mediators:"
 print(ao_result$pval)
-#>  [1] 3.412782e-05 1.480942e-02 3.246363e-03 2.303933e-06 3.425170e-07
-#>  [6] 5.124961e-03 1.033025e-09 2.413136e-07 1.811108e-02 7.794644e-01
-#> [11] 7.645206e-01 1.741991e-01 2.384521e-03 6.847255e-01 2.404346e-01
-#> [16] 6.522672e-01 9.045926e-02 6.659390e-01 9.671833e-01
+#>  [1] 3.162346e-05 1.439473e-02 3.118835e-03 2.088852e-06 3.057616e-07
+#>  [6] 4.941101e-03 8.793228e-10 2.148036e-07 1.763078e-02 7.785607e-01
+#> [11] 7.635594e-01 1.723941e-01 2.285347e-03 6.834709e-01 2.384619e-01
+#> [16] 6.509011e-01 8.911160e-02 6.646192e-01 9.670453e-01
 ```
 
 # Identifying Active Mediators
@@ -213,12 +197,12 @@ We can perform this test using `HIMA` package as well.
 ``` r
 ## Install the HIMA package
 install.packages('HIMA')
-#> Installing package into 'C:/Users/fsosa/AppData/Local/Temp/RtmpKQDP3I/temp_libpath6e6c43336c93'
+#> Installing package into 'C:/Users/fsosa/AppData/Local/Temp/RtmpKQDP3I/temp_libpath6e6c554021cf'
 #> (as 'lib' is unspecified)
 #> package 'HIMA' successfully unpacked and MD5 sums checked
 #> 
 #> The downloaded binary packages are in
-#>  C:\Users\fsosa\AppData\Local\Temp\RtmpyuZzgS\downloaded_packages
+#>  C:\Users\fsosa\AppData\Local\Temp\RtmpGMDSkB\downloaded_packages
 
 library(HIMA)
 #> Warning: package 'HIMA' was built under R version 4.3.3
@@ -275,26 +259,26 @@ in the simulated data.
 ``` r
 
 HIMA::dblassoHIMA(x,M,y)
-#> Step 1: Sure Independent Screening ...  (10:58:59 PM)
-#> Step 2: De-biased Lasso Estimates ...   (10:58:59 PM)
-#> Step 3: Joint significance test ...     (10:59:06 PM)
-#> Done!     (10:59:06 PM)
+#> Step 1: Sure Independent Screening ...  (11:09:20 PM)
+#> Step 2: De-biased Lasso Estimates ...   (11:09:21 PM)
+#> Step 3: Joint significance test ...     (11:09:27 PM)
+#> Done!     (11:09:27 PM)
 #>   Index  alpha_hat   alpha_se   beta_hat   beta_se        IDE      rimp
-#> 1     1 -0.4989049 0.06159061 -0.7553381 0.2351410  0.3768419  7.447952
-#> 2     3  0.6351005 0.05489418  1.2139274 0.2752724  0.7709659 15.237469
-#> 3     4  0.5432349 0.05966641 -0.7969289 0.2478265 -0.4329196  8.556278
-#> 4     5  0.7310222 0.04849277 -1.0000087 0.2845326 -0.7310286 14.448143
-#> 5     6 -0.7606745 0.04613191  0.9201336 0.2892166 -0.6999222 13.833353
-#> 6     7 -0.7180654 0.04946084 -1.4384565 0.2707685  1.0329058 20.414485
-#> 7     8 -0.7294041 0.04861566 -1.3916668 0.2796440  1.0150875 20.062321
+#> 1     1 -0.4989049 0.06159061 -0.7522887 0.2407388  0.3753205  7.361963
+#> 2     3  0.6351005 0.05489418  1.2125514 0.2837474  0.7700919 15.105458
+#> 3     4  0.5432349 0.05966641 -0.8081071 0.2536428 -0.4389920  8.610887
+#> 4     5  0.7310222 0.04849277 -1.0270749 0.2937140 -0.7508145 14.727329
+#> 5     6 -0.7606745 0.04613191  0.9458118 0.2983506 -0.7194550 14.112207
+#> 6     7 -0.7180654 0.04946084 -1.4210193 0.2790808  1.0203848 20.014986
+#> 7     8 -0.7294041 0.04861566 -1.4025766 0.2884823  1.0230451 20.067169
 #>           pmax
-#> 1 1.316873e-03
-#> 2 1.034121e-05
-#> 3 1.301393e-03
-#> 4 4.404721e-04
-#> 5 1.465304e-03
-#> 6 1.081337e-07
-#> 7 6.472224e-07
+#> 1 1.778553e-03
+#> 2 1.925594e-05
+#> 3 1.442524e-03
+#> 4 4.707808e-04
+#> 5 1.523680e-03
+#> 6 3.547092e-07
+#> 7 1.162553e-06
 ```
 
 Out of the 8 active mediators,
