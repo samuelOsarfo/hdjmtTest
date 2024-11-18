@@ -1,0 +1,23 @@
+Package: hdjmtTest
+Title: The hdjmtTest package provides tools for high-dimensional mediator screening and testing 
+Version: 0.0.0.9000
+Authors@R: c(person("Sangyoon", "Yi", role = c("aut", "cre"),,email='first.last@example.com'), person("Samuel", "Osarfo", role = c("aut"), email='test2@example.com'))
+Description: The hdjmtTest package provides tools for high-dimensional mediator screening and testing using Ridge-HOLP and Approximate Orthogonalization methods.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Suggests: 
+    knitr,
+    rmarkdown,
+Config/testthat/edition: 3
+Imports: 
+    HDMT,
+    selectiveInference,
+    stats
+Depends: 
+    R (>= 2.10)
+LazyData: True    
+LazyDataCompression: xz
+URL: https://github.com/samuelOsarfo/hdjmtTest
+BugReports: https://github.com/samuelOsarfo/hdjmtTest/issues
