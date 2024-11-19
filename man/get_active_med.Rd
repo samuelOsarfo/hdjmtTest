@@ -24,7 +24,7 @@ get_active_med(
 
 \item{COV.S}{a \code{data.frame}\\code{matrix} of covariates}
 
-\item{pval.adjust}{specifies which method to use for controlling FWER in the joint significance testing. Either \code{'HDMT'} (default) or \code{'bonferroni'}}
+\item{pval.adjust}{specifies which method to use for controlling FWER in the joint significance testing. Either \code{'HDMT'} (default) or \code{'Bonferroni'}}
 
 \item{d}{the number of screened mediators}
 
@@ -45,7 +45,16 @@ x <- ExampleData$x # assuming 'x' is a vector of exposures in ExampleData
 M <- ExampleData$M # assuming 'M' is a matrix of mediators in ExampleData
 
 # Get active mediators
+#using HDMT to control FWER (default)
 active_mediators_index <- get_active_med(y, x, M)
-print(active_mediators_index) # Print the indexes of active mediators
 
+# Print the indexes of active mediators
+print(active_mediators_index)
+
+
+#using Bonferroni correction to control FWER
+active_mediators_index <- get_active_med(y, x, M, pval.adjust='bonferroni')
+
+#Print the indexes of active mediators
+print(active_mediators_index)
 }
