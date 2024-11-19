@@ -79,7 +79,7 @@ If package "qvalue" is not found, please first install "qvalue" package through 
   - `y`: Outcome vector.
   - `x`: Exposure vector.
   - `M`: Matrix of mediators.
-  - `COV.S`:  a `data.frame`\ `matrix` of covariates (optional).
+  - `COV.S`:  a `data.frame` or  `matrix` of covariates (optional).
   - `d`: Desired number of mediators to select (optional).
   - `r`: Ridge-HOLP penalty parameter (default is 1).
 
@@ -91,7 +91,7 @@ If package "qvalue" is not found, please first install "qvalue" package through 
   - `y`: Outcome vector.
   - `x`: Exposure vector.
   - `chosen_M`: Matrix of mediators selected during screening.
-  - `COV.S`:  a `data.frame`\ `matrix` of covariates (optional).
+  - `COV.S`:  a `data.frame` or  `matrix` of covariates (optional).
   - `k`: Scalar used to compute projection directions (default is 1).
 
 ## `get_active_med`
@@ -102,8 +102,8 @@ If package "qvalue" is not found, please first install "qvalue" package through 
   - `y`: Outcome vector.
   - `x`: Exposure vector.
   - `M`: Matrix of mediators.
-  - `COV.S`:  A `data.frame`\ `matrix` of covariates (optional).
-  - `pval.adjust`: Specifies which method to use for controlling FWER in the joint significance testing. Either `HDMT` (default)               or `bonferroni`.
+  - `COV.S`:  A `data.frame` or `matrix` of covariates (optional).
+  - `pval.adjust`: Specifies which method to use for controlling FWER in the joint significance testing. Either `HDMT` (default)               or `Bonferroni`.
   - `d`:  Desired number of mediators to select (optional).
   - `r`:  Penalty parameter for the Ridge-HOLP. Default value is `1`
   - `k` : Scalar used to compute projection directions for AO. Default value is `1`.
@@ -134,7 +134,6 @@ The `medsc_holp` function performs Ridge-HOLP screening to select potential acti
 chosen_ind <- medsc_holp(y, x, M)
 
 
-# Print the indices of selected mediators
 print("Indexes of selected mediators:")
 print(chosen_ind)
 
@@ -178,15 +177,22 @@ After initial screening, the function fits the Approximate Orthogonalization (AO
 
 ```{r}
 # Identify active mediators
-active_mediators <- get_active_med(y, x, M)
 
-# Display indices of active mediators and the corresponding matrix
-print("Indexes of active mediators:")
-print(active_mediators)
+#Using HDMT in joint significance testing (Default)
+active_mediators_HDMT <- get_active_med(y, x, M) 
+
+#Indexes of active mediators identified using HDMT:"
+print(active_mediators_HDMT)
 
 
+
+#Using Bonferroni in joint significance testing
+active_mediators_Bonferroni <- get_active_med(y, x, M, pval.adjust='bonferroni') 
+
+#Indexes of active mediators identified using Bonferroni:"
+print(active_mediators_Bonferroni)
 ```
-Our method identifies all 8 active mediators `M[, 1],M[,2] M[,3], M[,4], M[,5], M[,6], M[,7], M[,8]`
+
 
 
 # Competing packages
