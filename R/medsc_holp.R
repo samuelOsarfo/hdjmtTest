@@ -5,8 +5,7 @@
 #' @param M  n by p matrix of mediators
 #' @param COV.S a \code{data.frame}\\code{matrix} of covariates
 #' @param d  desired number of chosen mediators
-#' @param r  scalar multiplied by the identity matrix for the Ridge-HOLP
-#' @param approved temporary parameter
+#' @param r  scalar multiplied by the identity matrix for the Ridge-HOLP. Default value is 1.
 #'
 #' @return A vector for indexes of  the selected mediators.
 #' @export
@@ -19,7 +18,7 @@
 #' chosen_ind <- medsc_holp(y, x, M)
 #' print(chosen_ind) # print indexes for the selected mediators
 #'
-medsc_holp <- function(y, x, M, COV.S=NULL, d = NULL, r = 1, approved=T){
+medsc_holp <- function(y, x, M, COV.S=NULL, d = NULL, r = 1){
 
   M <- scale(M)
   XC <- scale(x)
@@ -51,26 +50,22 @@ medsc_holp <- function(y, x, M, COV.S=NULL, d = NULL, r = 1, approved=T){
 
   # Compute the Ridge-HOLP estimates for beta
   holp_est_beta <- t(MCX) %*% solve(tcrossprod(MCX) + diag(n) * r) %*% y # must be (p + 1) dimensional
-  sort_obj <- sort(abs(holp_est_beta[-c((p + 1):(p + q + 1)),1]), index.return = T, decreasing = T)
-  chosen_ind <- sort(sort_obj$ix[c(1:num_chosen)])
 
-  #implemented this function like the HIMA paper
-  if(approved){
-    #compute the Ridge_HOLP estimate for alpha
+
+  #compute the estimates for alpha
     alpha_est <- matrix(NA, p, 1)
     for(i in 1:p){
-      est <- lsfit(XC, M[, i], intercept = FALSE) #removes the intercept  #rem to add stats:: if approved by Dr. Yi
+      est <- stats::lsfit(XC, M[, i], intercept = FALSE) #removes the intercept  #rem to add stats:: if approved by Dr. Yi
       alpha_est[i, 1] <- est$coefficients[1]
-       #print(est$coefficients)
-    }
+
+          }
 
 
-    sort_obj_approve <- sort(abs(holp_est_beta[-c((p + 1):(p + q + 1)),1]* alpha_est[,1]), index.return = T, decreasing = T)
-    chosen_ind_approved <- sort(sort_obj_approve$ix[c(1:num_chosen)])
-
-  }
+    sort_obj <- sort(abs(holp_est_beta[-c((p + 1):(p + q + 1)),1]* alpha_est[,1]), index.return = T, decreasing = T)
+    chosen_ind <- sort(sort_obj$ix[c(1:num_chosen)])
 
 
 
-  return(list(chosen_ind= chosen_ind, chosen_ind_approved= chosen_ind_approved))
+
+  return(chosen_ind)
 }

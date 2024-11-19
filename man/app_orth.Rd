@@ -15,8 +15,8 @@ app_orth(y, x, chosen_M, COV.S = NULL, k = 1)
 
 \item{COV.S}{a \code{data.frame}\\code{matrix} of covariates}
 
-\item{k}{A scalar used as a factor multiplied by identity matrix to compute projection direction
-k = 1 or 1/n were used in the original paper by Battey and Reid (2023). The default value used is k=1.}
+\item{k}{A scalar multiplied by identity matrix to compute projection direction.
+k = 1 or 1/n were used in the original paper by Battey and Reid (2023). Default value is 1.}
 }
 \value{
 A a vector of test statistics (ts) each of which asymptotically follow std. normal under the null and

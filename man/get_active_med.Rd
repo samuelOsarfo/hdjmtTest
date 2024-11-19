@@ -4,7 +4,16 @@
 \alias{get_active_med}
 \title{Get Active Mediators}
 \usage{
-get_active_med(y, x, M, COV.S = NULL, d = NULL)
+get_active_med(
+  y,
+  x,
+  M,
+  COV.S = NULL,
+  pval.adjust = "HDMT",
+  d = NULL,
+  r = 1,
+  k = 1
+)
 }
 \arguments{
 \item{y}{vector of outcome}
@@ -15,7 +24,13 @@ get_active_med(y, x, M, COV.S = NULL, d = NULL)
 
 \item{COV.S}{a \code{data.frame}\\code{matrix} of covariates}
 
+\item{pval.adjust}{specifies which method to use for controlling FWER in the joint significance testing. Either \code{'HDMT'} (default) or \code{'bonferroni'}}
+
 \item{d}{the number of screened mediators}
+
+\item{r}{scalar multiplied by the identity matrix for the Ridge-HOLP. Default value is 1}
+
+\item{k}{a scalar multiplied by identity matrix to compute projection direction for AO. Default value 1.}
 }
 \value{
 A vector of the indexes for active mediators.
@@ -30,7 +45,7 @@ x <- ExampleData$x # assuming 'x' is a vector of exposures in ExampleData
 M <- ExampleData$M # assuming 'M' is a matrix of mediators in ExampleData
 
 # Get active mediators
-active_index <- get_active_med(y, x, M)
-print(active_index) # Print the indexes of active mediators
+active_mediators_index <- get_active_med(y, x, M)
+print(active_mediators_index) # Print the indexes of active mediators
 
 }

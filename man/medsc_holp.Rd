@@ -4,7 +4,7 @@
 \alias{medsc_holp}
 \title{Screen mediators by Ridge-HOLP method}
 \usage{
-medsc_holp(y, x, M, COV.S = NULL, d = NULL, r = 1, approved = T)
+medsc_holp(y, x, M, COV.S = NULL, d = NULL, r = 1)
 }
 \arguments{
 \item{y}{n-dimensional vectors of outcome}
@@ -17,9 +17,7 @@ medsc_holp(y, x, M, COV.S = NULL, d = NULL, r = 1, approved = T)
 
 \item{d}{desired number of chosen mediators}
 
-\item{r}{scalar multiplied by the identity matrix for the Ridge-HOLP}
-
-\item{approved}{temporary parameter}
+\item{r}{scalar multiplied by the identity matrix for the Ridge-HOLP. Default value is 1.}
 }
 \value{
 A vector for indexes of  the selected mediators.

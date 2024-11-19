@@ -4,8 +4,8 @@
 #' @param x  An n-dimensional vector of exposure
 #' @param chosen_M An n by q matrix of mediators chosen by some screening method
 #' @param COV.S a \code{data.frame}\\code{matrix} of covariates
-#' @param k A scalar used as a factor multiplied by identity matrix to compute projection direction
-#'    k = 1 or 1/n were used in the original paper by Battey and Reid (2023). The default value used is k=1.
+#' @param k A scalar multiplied by identity matrix to compute projection direction.
+#'    k = 1 or 1/n were used in the original paper by Battey and Reid (2023). Default value is 1.
 #'
 #' @return A a vector of test statistics (ts) each of which asymptotically follow std. normal under the null and
 #'    a vector of the corresponding p-values

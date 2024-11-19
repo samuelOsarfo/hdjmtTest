@@ -27,7 +27,7 @@ comp_alpha <- function(x, chosen_M){
 }
 
 #####################################################
-####### Code from HIMA package for js test ############
+####### Code from HDMT for js test ############
 #####################################################
 null_estimation <- function(input_pvalues, lambda = 0.5) {
   ## input_pvalues is a matrix with 2 columns of p-values, the first column is p-value for exposure-mediator association, the second column is p-value for mediator-outcome association adjusted for exposure
@@ -128,44 +128,45 @@ null_estimation <- function(input_pvalues, lambda = 0.5) {
 # chosen_ind: a vector of indices for chosen mediators
 # pval_alp: a vector of RAW p-values to test H_{0}: \alpha_{j} = 0 where \alpha_{j} is the effect of the exposure on the j-th mediator
 # pval_beta: a vector of RAW p-values to test H_{0}: \beta_{j} = 0 where \beta_{j} is the effect of the j-th mediator on the response
-# method: a method used to adjust each p-value that will be plugged as an argument of the p.adjust function, see ?p.adjust for more details
+# method: a method used to adjust each p-value that will be plugged as an argument of the p.adjust function, see ?p.adjust for more details. HDMT is the default
 # alpha: a significance level
-
 # output
 # which_sig: an index set for active mediators that turn out to be significant
 
-js_test <- function(chosen_ind, pval_alp, pval_beta, method = "bonferroni" , alpha = 0.05){
-
-  PA <- cbind(pval_alp, pval_beta)
-  P_value <- apply(PA, 1, max) # The joint p-values for SIS variable
-
-  N0 <- dim(PA)[1] * dim(PA)[2]
-  input_pvalues <- PA + matrix(runif(N0, 0, 10^{-10}), dim(PA)[1], 2)
-
-  # Estimate the proportions of the three component nulls
-  nullprop <- null_estimation(input_pvalues)
-
-  fdrcut <- HDMT::fdr_est(nullprop$alpha00,
-                          nullprop$alpha01,
-                          nullprop$alpha10,
-                          nullprop$alpha1,
-                          nullprop$alpha2,
-                          input_pvalues,
-                          exact = 0
-  )
-
-  ID_fdr <- which(fdrcut <= 0.05)
+js_test <- function(chosen_ind, pval_alp, pval_beta, method=NULL, alpha = 0.05){
 
 
-  m <- length(pval_beta)
-  adjp_alp <- stats::p.adjust(pval_alp, method = method)
-  adjp_beta <- stats::p.adjust(pval_beta, method = method)
-  max_pval <- sapply(c(1:m), FUN = function(j){max(adjp_alp[j], adjp_beta[j])})
-  which_sig <- chosen_ind[max_pval <= alpha]
+      PA <- cbind(pval_alp, pval_beta)
+      P_value <- apply(PA, 1, max) # The joint p-values for SIS variable
+
+      N0 <- dim(PA)[1] * dim(PA)[2]
+      input_pvalues <- PA + matrix(stats::runif(N0, 0, 10^{-10}), dim(PA)[1], 2)
+
+      # Estimate the proportions of the three component nulls
+      nullprop <- null_estimation(input_pvalues)
+
+      fdrcut <- HDMT::fdr_est(nullprop$alpha00,
+                              nullprop$alpha01,
+                              nullprop$alpha10,
+                              nullprop$alpha1,
+                              nullprop$alpha2,
+                              input_pvalues,
+                              exact = 0
+      )
+
+      which_sig <- which(fdrcut <= 0.05)
 
 
-  return(list(which_sig_benferroni=which_sig, which_with_fdr_in_HDMT_package_approved=ID_fdr))
+  if(method == 'bonferroni'){
+       m <- length(pval_beta)
+       adjp_alp <- stats::p.adjust(pval_alp, method = method)
+       adjp_beta <- stats::p.adjust(pval_beta, method = method)
+       max_pval <- sapply(c(1:m), FUN = function(j){max(adjp_alp[j], adjp_beta[j])})
+       which_sig <- chosen_ind[max_pval <= alpha]
+  }
+
+
+
+  return(which_sig)
 }
-
-
 

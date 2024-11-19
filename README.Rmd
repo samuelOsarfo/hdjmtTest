@@ -37,14 +37,14 @@ The `hdjmtTest` package performs high-dimensional mediator screening and testing
 
 # Structure of ExampleData
 
-The example data provided with the package. The data contains:
+The example data provided with the package contains:
 
-- `M`: A 200x2000 matrix of mediators generated using the compound symmetry covariance structure to introduce high correlation among the        mediators. Only the first 8 mediators are active.
+- `M`: A 200x2000 matrix of mediators generated using the compound symmetry covariance structure to introduce high correlation among the        mediators. Only the first 8 mediators are active/significant.
 - `y`: A vector of length 200 representing outcomes.
 - `x`: A vector of length 200 representing exposures.
 - `alp_vec`: A parameter vector of length 200 that relates the exposure variable to the mediators. The first 8 values are 
  `-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220` with the rest being zeros.
-- `beta_vec`:A parameter vector of length 200 that relates the mediators to the outcome variable. The first 12 values are 
+- `beta_vec`: A parameter vector of length 200 that relates the mediators to the outcome variable. The first 12 values are 
 `-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034, -0.5986530, -0.9639383` with the rest being zeros.
 
 
@@ -79,27 +79,35 @@ If package "qvalue" is not found, please first install "qvalue" package through 
   - `y`: Outcome vector.
   - `x`: Exposure vector.
   - `M`: Matrix of mediators.
+  - `COV.S`:  a `data.frame`\ `matrix` of covariates (optional).
   - `d`: Desired number of mediators to select (optional).
-  - `r`: Ridge penalty parameter (default is 1).
+  - `r`: Ridge-HOLP penalty parameter (default is 1).
 
 ## `app_orth`
 
 - **Description**: Fits the Approximate Orthogonalization model to test the significance of mediators.
-- **Usage**: `app_orth(y, x, chosen_M, k = 1)`
+- **Usage**: `app_orth(y, x, chosen_M, COV.S=NULL, k = 1)`
 - **Arguments**:
   - `y`: Outcome vector.
   - `x`: Exposure vector.
   - `chosen_M`: Matrix of mediators selected during screening.
-  - `k`: Scalar factor used for projection direction (default is 1).
+  - `COV.S`:  a `data.frame`\ `matrix` of covariates (optional).
+  - `k`: Scalar used to compute projection directions (default is 1).
 
 ## `get_active_med`
 
 - **Description**: A wrapper function that combines screening and testing to identify active mediators.
-- **Usage**: `get_active_med(y, x, M)`
+- **Usage**: `get_active_med(y, x, M, COV.S=NULL,pval.adjust='HDMT',d=NULL, r=1, k=1)`
 - **Arguments**:
   - `y`: Outcome vector.
   - `x`: Exposure vector.
   - `M`: Matrix of mediators.
+  - `COV.S`:  A `data.frame`\ `matrix` of covariates (optional).
+  - `pval.adjust`: Specifies which method to use for controlling FWER in the joint significance testing. Either `HDMT` (default)               or `bonferroni`.
+  - `d`:  Desired number of mediators to select (optional).
+  - `r`:  Penalty parameter for the Ridge-HOLP. Default value is `1`
+  - `k` : Scalar used to compute projection directions for AO. Default value is `1`.
+
 
 
  
@@ -123,12 +131,12 @@ The `medsc_holp` function performs Ridge-HOLP screening to select potential acti
 
 ```{r}
 # Perform Ridge-HOLP screening
-medsc_holp(y, x, M)$chosen_ind_approved  # new implementation following HIMA2
-medsc_holp(y, x, M)$chosen_ind  #old implementation 
+chosen_ind <- medsc_holp(y, x, M)
+
 
 # Print the indices of selected mediators
-#print("Indexes of selected mediators:")
-#print(chosen_ind)
+print("Indexes of selected mediators:")
+print(chosen_ind)
 
 ```
 
@@ -138,7 +146,7 @@ With the selected mediators, we can use `app_orth` to fit the Approximate Orthog
 
 ```{r}
 # Apply AO on the chosen mediators
-chosen_med <- M[, medsc_holp(y, x, M)$chosen_ind_approved]
+chosen_med <- M[, medsc_holp(y, x, M)]
 ao_result <- app_orth(y, x, chosen_med)
 
 
@@ -164,7 +172,7 @@ After initial screening, the function fits the Approximate Orthogonalization (AO
 ### 3. Joint-Significance Test
 - A joint-significance test is performed to identify active mediators using the p-values obtained from both the AO model and the mediator model.
 
-- To control for the family-wise error rate due to multiple testing, Bonferroni correction is applied to the p-values.
+- To control for the family-wise error rate due to multiple testing, Bonferroni/HDMT correction is applied to the p-values.
 
 - **Output**:  Indexes of the mediators that are deemed significant after the joint-significance test.
 
@@ -178,7 +186,7 @@ print(active_mediators)
 
 
 ```
-
+Our method identifies all 8 active mediators `M[, 1],M[,2] M[,3], M[,4], M[,5], M[,6], M[,7], M[,8]`
 
 
 # Competing packages
@@ -186,9 +194,9 @@ We can perform this test using `HIMA` package as well.
 
 ```{r}
 ## Install the HIMA package
-install.packages('HIMA')
+#install.packages('HIMA')
 
-library(HIMA)
+suppressMessages(library(HIMA))
 
 ```
 
