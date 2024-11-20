@@ -17,7 +17,7 @@ The example data provided with the package contains:
 
 - `M`: A 200x2000 matrix of mediators generated using the compound
   symmetry covariance structure to introduce high correlation among the
-  mediators. Only the first 8 mediators are active/significant.
+  mediators with $\rho= 0.8$.
 - `y`: A vector of length 200 representing outcomes.
 - `x`: A vector of length 200 representing exposures.
 - `alp_vec`: A parameter vector of length 200 that relates the exposure
@@ -25,9 +25,10 @@ The example data provided with the package contains:
   `-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220`
   with the rest being zeros.
 - `beta_vec`: A parameter vector of length 200 that relates the
-  mediators to the outcome variable. The first 12 values are
+  mediators to the outcome variable.  
   `-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034, -0.5986530, -0.9639383`
   with the rest being zeros.
+- 
 
 # How to install package from github
 
@@ -59,7 +60,8 @@ through Bioconductor:
   - `x`: Exposure vector.
   - `M`: Matrix of mediators.
   - `COV.S`: a `data.frame` or `matrix` of covariates (optional).
-  - `d`: Desired number of mediators to select (optional).
+  - `d`: Desired number of mediators to select (optional). Default value
+    is $d= 0.5\cdot n/\log(n)$.
   - `r`: Ridge-HOLP penalty parameter (default is 1).
 
 ## `app_orth`
@@ -88,7 +90,8 @@ through Bioconductor:
   - `pval.adjust`: Specifies which method to use for controlling FWER in
     the joint significance testing. Either `HDMT` (default) or
     `Bonferroni`.
-  - `d`: Desired number of mediators to select (optional).
+  - `d`: Desired number of mediators to select (optional). Default value
+    is $d= 0.5\cdot n/\log(n)$.
   - `r`: Penalty parameter for the Ridge-HOLP. Default value is `1`
   - `k` : Scalar used to compute projection directions for AO. Default
     value is `1`.
@@ -138,18 +141,18 @@ ao_result <- app_orth(y, x, chosen_med)
 print("Test statistics for selected mediators:")
 #> [1] "Test statistics for selected mediators:"
 print(ao_result$ts)
-#>  [1] -4.1654393  2.4496059  2.9586103 -4.7491821 -5.1247699  2.8135440
-#>  [7] -6.1357816 -5.1910207 -2.3755580 -0.2814648  0.3010984 -1.3658597
-#> [13] -3.0533277  0.4081224 -1.1799704  0.4529446  1.7017329 -0.4339602
-#> [19]  0.0413540
+#>  [1] -4.15095233  2.44108639  2.94832053 -4.73266486 -5.10694645  2.80375878
+#>  [7] -6.11444188 -5.17296682 -2.36729601 -0.28048591  0.30005125 -1.36110933
+#> [13] -3.04270851  0.40670299 -1.17586654  0.45136926  1.69581446 -0.43245094
+#> [19]  0.04121017
 
 print("P-values for selected mediators:")
 #> [1] "P-values for selected mediators:"
 print(ao_result$pval)
-#>  [1] 3.107535e-05 1.430126e-02 3.090296e-03 2.042410e-06 2.979013e-07
-#>  [6] 4.899868e-03 8.474153e-10 2.091444e-07 1.752244e-02 7.783539e-01
-#> [11] 7.633394e-01 1.719830e-01 2.263186e-03 6.831838e-01 2.380120e-01
-#> [16] 6.505887e-01 8.880544e-02 6.643173e-01 9.670137e-01
+#>  [1] 3.310947e-05 1.464315e-02 3.195056e-03 2.215912e-06 3.274065e-07
+#>  [6] 5.051068e-03 9.689547e-10 2.304059e-07 1.791860e-02 7.791047e-01
+#> [11] 7.641381e-01 1.734791e-01 2.344593e-03 6.842261e-01 2.396482e-01
+#> [16] 6.517234e-01 8.992102e-02 6.654137e-01 9.671283e-01
 ```
 
 # Identifying Active Mediators
@@ -189,10 +192,10 @@ significance of each mediator.
 
 #Using HDMT in joint significance testing (Default)
 active_mediators_HDMT <- get_active_med(y, x, M) 
-#> Step 1: Ridge-HOLP Screening   -----  11:19:17 AM
-#> Step 2: Approximate Orthogonalization Estimates   -----  11:19:17 AM
-#> Step 3: Joint Significance Testing   -----  11:19:18 AM
-#> Complete!!   11:19:19 AM
+#> Step 1: Ridge-HOLP Screening   -----  01:53:01 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  01:53:01 PM
+#> Step 3: Joint Significance Testing   -----  01:53:02 PM
+#> Complete!!   01:53:02 PM
 
 #Indexes of active mediators identified using HDMT:"
 print(active_mediators_HDMT)
@@ -202,10 +205,10 @@ print(active_mediators_HDMT)
 
 #Using Bonferroni in joint significance testing
 active_mediators_Bonferroni <- get_active_med(y, x, M, pval.adjust='bonferroni') 
-#> Step 1: Ridge-HOLP Screening   -----  11:19:19 AM
-#> Step 2: Approximate Orthogonalization Estimates   -----  11:19:19 AM
-#> Step 3: Joint Significance Testing   -----  11:19:20 AM
-#> Complete!!   11:19:20 AM
+#> Step 1: Ridge-HOLP Screening   -----  01:53:02 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  01:53:02 PM
+#> Step 3: Joint Significance Testing   -----  01:53:04 PM
+#> Complete!!   01:53:04 PM
 
 #Indexes of active mediators identified using Bonferroni:"
 print(active_mediators_Bonferroni)
@@ -236,26 +239,26 @@ in the simulated data.
 ``` r
 
 HIMA::dblassoHIMA(x,M,y)
-#> Step 1: Sure Independent Screening ...  (11:19:20 AM)
-#> Step 2: De-biased Lasso Estimates ...   (11:19:20 AM)
-#> Step 3: Joint significance test ...     (11:19:26 AM)
-#> Done!     (11:19:26 AM)
+#> Step 1: Sure Independent Screening ...  (1:53:04 PM)
+#> Step 2: De-biased Lasso Estimates ...   (1:53:04 PM)
+#> Step 3: Joint significance test ...     (1:53:12 PM)
+#> Done!     (1:53:12 PM)
 #>   Index  alpha_hat   alpha_se   beta_hat   beta_se        IDE      rimp
-#> 1     1 -0.4989049 0.06159061 -0.7582992 0.2372889  0.3783192  7.486435
-#> 2     3  0.6351005 0.05489418  1.1874727 0.2777868  0.7541645 14.923915
-#> 3     4  0.5432349 0.05966641 -0.7952144 0.2500903 -0.4319882  8.548474
-#> 4     5  0.7310222 0.04849277 -1.0028498 0.2871316 -0.7331055 14.507185
-#> 5     6 -0.7606745 0.04613191  0.9171800 0.2918584 -0.6976755 13.806072
-#> 6     7 -0.7180654 0.04946084 -1.4322519 0.2732418  1.0284505 20.351671
-#> 7     8 -0.7294041 0.04861566 -1.4116900 0.2821984  1.0296925 20.376248
+#> 1     1 -0.4989049 0.06159061 -0.7553381 0.2351410  0.3768419  7.447952
+#> 2     3  0.6351005 0.05489418  1.2139274 0.2752724  0.7709659 15.237469
+#> 3     4  0.5432349 0.05966641 -0.7969289 0.2478265 -0.4329196  8.556278
+#> 4     5  0.7310222 0.04849277 -1.0000087 0.2845326 -0.7310286 14.448143
+#> 5     6 -0.7606745 0.04613191  0.9201336 0.2892166 -0.6999222 13.833353
+#> 6     7 -0.7180654 0.04946084 -1.4384565 0.2707685  1.0329058 20.414485
+#> 7     8 -0.7294041 0.04861566 -1.3916668 0.2796440  1.0150875 20.062321
 #>           pmax
-#> 1 1.395020e-03
-#> 2 1.913412e-05
-#> 3 1.474226e-03
-#> 4 4.782549e-04
-#> 5 1.674824e-03
-#> 6 1.591024e-07
-#> 7 5.659924e-07
+#> 1 1.316873e-03
+#> 2 1.034121e-05
+#> 3 1.301393e-03
+#> 4 4.404721e-04
+#> 5 1.465304e-03
+#> 6 1.081337e-07
+#> 7 6.472224e-07
 ```
 
 Out of the 8 active mediators,
@@ -266,6 +269,14 @@ active my HIMA (specifically HIMA2).
 
 The `hdjmtTest` package simplifies high-dimensional mediation analysis,
 providing tools for selecting active mediators under high correlation
-scenarios.
+scenarios. Refer to the function documentations for more details.
 
-Refer to the function documentation for more details.
+# References
+
+- Wang, X., & Leng, C. (2016). High dimensional ordinary least squares
+  projection for screening variables. Journal of the Royal Statistical
+  Society Series B: Statistical Methodology, 78(3), 589-611.
+
+- Battey, H. S., & Reid, N. (2023). On inference in high-dimensional
+  regression. Journal of the Royal Statistical Society Series B:
+  Statistical Methodology, 85(1), 149-175.

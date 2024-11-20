@@ -37,15 +37,17 @@ The `hdjmtTest` package performs high-dimensional mediator screening and testing
 
 # Structure of ExampleData
 
-The example data provided with the package contains:
-
-- `M`: A 200x2000 matrix of mediators generated using the compound symmetry covariance structure to introduce high correlation among the        mediators. Only the first 8 mediators are active/significant.
-- `y`: A vector of length 200 representing outcomes.
+The example data provided with the package  contains:
+- information for `200` observations and `2000` potential active mediators.
+-**Variables**:
+- `M`: A 200x2000 matrix of mediators generated using the compound symmetry covariance structure to introduce high correlation among the mediators with $\rho= 0.8$.
 - `x`: A vector of length 200 representing exposures.
+- `y`: A vector of length 200 representing outcomes.
 - `alp_vec`: A parameter vector of length 200 that relates the exposure variable to the mediators. The first 8 values are 
  `-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220` with the rest being zeros.
-- `beta_vec`: A parameter vector of length 200 that relates the mediators to the outcome variable. The first 12 values are 
+- `beta_vec`: A parameter vector of length 200 that relates the mediators to the outcome variable.  
 `-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034, -0.5986530, -0.9639383` with the rest being zeros.
+- **Active Mediators**: given the non-zero values in `alp_vec` and `beta_vec`, only the first 8 mediators are truly active
 
 
 
@@ -80,7 +82,7 @@ If package "qvalue" is not found, please first install "qvalue" package through 
   - `x`: Exposure vector.
   - `M`: Matrix of mediators.
   - `COV.S`:  a `data.frame` or  `matrix` of covariates (optional).
-  - `d`: Desired number of mediators to select (optional).
+  - `d`: Desired number of mediators to select (optional). Default value is $d= 0.5\cdot n/\log(n)$.
   - `r`: Ridge-HOLP penalty parameter (default is 1).
 
 ## `app_orth`
@@ -104,7 +106,7 @@ If package "qvalue" is not found, please first install "qvalue" package through 
   - `M`: Matrix of mediators.
   - `COV.S`:  A `data.frame` or `matrix` of covariates (optional).
   - `pval.adjust`: Specifies which method to use for controlling FWER in the joint significance testing. Either `HDMT` (default)               or `Bonferroni`.
-  - `d`:  Desired number of mediators to select (optional).
+  - `d`:  Desired number of mediators to select (optional). Default value is $d= 0.5\cdot n/\log(n)$.
   - `r`:  Penalty parameter for the Ridge-HOLP. Default value is `1`
   - `k` : Scalar used to compute projection directions for AO. Default value is `1`.
 
@@ -220,6 +222,11 @@ Out of the 8 active mediators, `M[, 1], M[,3], M[,4], M[,5], M[,6], M[,7], M[,8]
 
 # Conclusion
 
-The `hdjmtTest` package simplifies high-dimensional mediation analysis, providing tools for selecting active mediators under high correlation scenarios.
+The `hdjmtTest` package simplifies high-dimensional mediation analysis, providing tools for selecting active mediators under high correlation scenarios. Refer to the function documentations for more details.
 
-Refer to the function documentation for more details.
+
+# Reference
+
+- Wang, X., & Leng, C. (2016). High dimensional ordinary least squares projection for screening variables. Journal of the Royal Statistical Society Series B: Statistical Methodology, 78(3), 589-611.
+
+- Battey, H. S., & Reid, N. (2023). On inference in high-dimensional regression. Journal of the Royal Statistical Society Series B: Statistical Methodology, 85(1), 149-175.
