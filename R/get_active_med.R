@@ -1,14 +1,13 @@
 #' Get Active Mediators
 #'
-#' @param y  vector of outcome
-#' @param x vector of exposure
-#' @param M a \code{data.frame}\\code{matrix} of mediators
-#' @param COV.S a \code{data.frame}\\code{matrix} of covariates
+#' @param y  vector of outcomes
+#' @param x vector of exposures
+#' @param M a \code{data.frame} or \code{matrix} of mediators
+#' @param COV.S a \code{data.frame} or \code{matrix} of covariates
 #' @param pval.adjust specifies which method to use for controlling FWER in the joint significance testing. Either \code{'HDMT'} (default) or \code{'Bonferroni'}
-#' @param d the number of screened mediators
-#' @param r  scalar multiplied by the identity matrix for the Ridge-HOLP. Default value is 1
-#' @param k a scalar multiplied by identity matrix to compute projection direction for AO. Default value 1.
-#'
+#' @param d the number of screened mediators. Default value is \eqn{d = 0.5 \cdot n/\log(n)}.
+#' @param r  a penalty parameter for the Ridge-HOLP. Default value is `1`
+#' @param k  a scalar for computing projection directions for AO. Default value is `1`.
 #'
 #' @return A vector of the indexes for active mediators.
 #' @export
@@ -16,8 +15,8 @@
 #' @examples
 #' data(ExampleData) # Load ExampleData from the package
 #' y <- ExampleData$y # 'y' is a vector of outcomes in ExampleData
-#' x <- ExampleData$x # assuming 'x' is a vector of exposures in ExampleData
-#' M <- ExampleData$M # assuming 'M' is a matrix of mediators in ExampleData
+#' x <- ExampleData$x #  'x' is a vector of exposures in ExampleData
+#' M <- ExampleData$M #  'M' is a matrix of mediators in ExampleData
 #'
 #' # Get active mediators
 #' #using HDMT to control FWER (default)

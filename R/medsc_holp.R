@@ -1,20 +1,21 @@
 #' Screen mediators by Ridge-HOLP method
 #'
-#' @param y  n-dimensional vectors of outcome
-#' @param x  n-dimensional vectors of exposure
+#' @param y  n-dimensional vector of continuous outcomes.
+#' @param x  n-dimensional vector of exposures
 #' @param M  n by p matrix of mediators
-#' @param COV.S a \code{data.frame}\\code{matrix} of covariates
-#' @param d  desired number of chosen mediators
-#' @param r  scalar multiplied by the identity matrix for the Ridge-HOLP. Default value is 1.
+#' @param COV.S a \code{data.frame} or \code{matrix} of covariates
+#' @param d  desired number of chosen mediators. Default value is \eqn{d = 0.5 \cdot n/\log(n)}.
+#' @param r  scalar for the penalty parameter. Default value is 1.
 #'
 #' @return A vector for indexes of  the selected mediators.
 #' @export
 #'
 #' @examples
 #' data(ExampleData) # Load ExampleData from the data from package
-#' y <- ExampleData$y #  'y' is a continuous vector in ExampleData
-#' x <- ExampleData$x #   'x' is a vector in ExampleData
-#' M <- ExampleData$M # 'M' is a matrix  of mediators in ExampleData
+#' y <- ExampleData$y #   'y' is a vector of continuous outcomes in ExampleData
+#' x <- ExampleData$x #   'x' is a vector of exposures in ExampleData
+#' M <- ExampleData$M #   'M' is a matrix  of mediators in ExampleData
+#'
 #' chosen_ind <- medsc_holp(y, x, M)
 #' print(chosen_ind) # print indexes for the selected mediators
 #'

@@ -7,16 +7,15 @@
 app_orth(y, x, chosen_M, COV.S = NULL, k = 1)
 }
 \arguments{
-\item{y}{An n-dimensional vector of outcomes}
+\item{y}{An n-dimensional vector of outcomes.}
 
-\item{x}{An n-dimensional vector of exposure}
+\item{x}{An n-dimensional vector of exposure.}
 
-\item{chosen_M}{An n by q matrix of mediators chosen by some screening method}
+\item{chosen_M}{An n by q matrix of mediators chosen by some screening method.}
 
-\item{COV.S}{a \code{data.frame}\\code{matrix} of covariates}
+\item{COV.S}{a \code{data.frame} or \code{matrix} of covariates.}
 
-\item{k}{A scalar multiplied by identity matrix to compute projection direction.
-k = 1 or 1/n were used in the original paper by Battey and Reid (2023). Default value is 1.}
+\item{k}{A scalar for computing projection directions. Default value is 1.}
 }
 \value{
 A a vector of test statistics (ts) each of which asymptotically follow std. normal under the null and
@@ -27,10 +26,11 @@ Fit Approximate Orthogonalization by Battey and Reid (2023)
 }
 \examples{
 data(ExampleData) # Load ExampleData1 from the package
-y <- ExampleData$y # assuming 'y' is a vector/column in ExampleData
-x <- ExampleData$x # assuming 'x' is a vector/column in ExampleData
-M <- ExampleData$M # assuming 'M' is a matrix of mediators in ExampleData
-# Perform screening using Ridge-HOLP
+y <- ExampleData$y # 'y' is a vector of outcomes in ExampleData
+x <- ExampleData$x # 'x' is a vector of exposures in ExampleData
+M <- ExampleData$M # 'M' is a matrix of mediators in ExampleData
+
+#Perform screening using Ridge-HOLP
 chosen_ind <- medsc_holp(y, x, M)
 chosen_M <- M[, chosen_ind]
 

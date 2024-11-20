@@ -1,22 +1,22 @@
 #' Fit Approximate Orthogonalization by Battey and Reid (2023)
 #'
-#' @param y  An n-dimensional vector of outcomes
-#' @param x  An n-dimensional vector of exposure
-#' @param chosen_M An n by q matrix of mediators chosen by some screening method
-#' @param COV.S a \code{data.frame}\\code{matrix} of covariates
-#' @param k A scalar multiplied by identity matrix to compute projection direction.
-#'    k = 1 or 1/n were used in the original paper by Battey and Reid (2023). Default value is 1.
+#' @param y  An n-dimensional vector of outcomes.
+#' @param x  An n-dimensional vector of exposure.
+#' @param chosen_M An n by q matrix of mediators chosen by some screening method.
+#' @param COV.S a \code{data.frame} or \code{matrix} of covariates.
+#' @param k A scalar for computing projection directions. Default value is 1.
 #'
 #' @return A a vector of test statistics (ts) each of which asymptotically follow std. normal under the null and
 #'    a vector of the corresponding p-values
 #' @export
-
+#'
 #' @examples
 #' data(ExampleData) # Load ExampleData1 from the package
-#' y <- ExampleData$y # assuming 'y' is a vector/column in ExampleData
-#' x <- ExampleData$x # assuming 'x' is a vector/column in ExampleData
-#' M <- ExampleData$M # assuming 'M' is a matrix of mediators in ExampleData
-#' # Perform screening using Ridge-HOLP
+#' y <- ExampleData$y # 'y' is a vector of outcomes in ExampleData
+#' x <- ExampleData$x # 'x' is a vector of exposures in ExampleData
+#' M <- ExampleData$M # 'M' is a matrix of mediators in ExampleData
+#'
+#' #Perform screening using Ridge-HOLP
 #' chosen_ind <- medsc_holp(y, x, M)
 #' chosen_M <- M[, chosen_ind]
 #'
