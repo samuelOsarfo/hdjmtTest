@@ -41,7 +41,7 @@ The example data provided with the package  contains:
 
 - information for `200` observations and `2000` potential active mediators.
 - **Variables**:
-  - `M`: A 200x2000 matrix of mediators generated using the compound symmetry covariance structure to introduce high correlation among the mediators   with $\rho= 0.8$.
+  - `M`: A 200x2000 matrix of mediators generated using the compound symmetry covariance structure to introduce high correlation among the mediators, with $\rho= 0.8$.
   - `x`: A vector of length 200 representing exposures.
   - `y`: A vector of length 200 representing outcomes.
   - `alp_vec`: A parameter vector of length 200 that relates the exposure variable to the mediators. The first 8 values are `-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220` with the rest being zeros.
