@@ -13,21 +13,26 @@ demonstrates how to use the primary functions with a simulated dataset,
 
 # Structure of ExampleData
 
-The example data provided with the package contains: - information for
-`200` observations and `2000` potential active mediators.
--**Variables**: - `M`: A 200x2000 matrix of mediators generated using
-the compound symmetry covariance structure to introduce high correlation
-among the mediators with $\rho= 0.8$. - `x`: A vector of length 200
-representing exposures. - `y`: A vector of length 200 representing
-outcomes. - `alp_vec`: A parameter vector of length 200 that relates the
-exposure variable to the mediators. The first 8 values are
-`-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220`
-with the rest being zeros. - `beta_vec`: A parameter vector of length
-200 that relates the mediators to the outcome variable.  
-`-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034, -0.5986530, -0.9639383`
-with the rest being zeros. - **Active Mediators**: given the non-zero
-values in `alp_vec` and `beta_vec`, only the first 8 mediators are truly
-active
+The example data provided with the package contains:
+
+- information for `200` observations and `2000` potential active
+  mediators.
+- **Variables**:
+  - `M`: A 200x2000 matrix of mediators generated using the compound
+    symmetry covariance structure to introduce high correlation among
+    the mediators with $\rho= 0.8$.
+  - `x`: A vector of length 200 representing exposures.
+  - `y`: A vector of length 200 representing outcomes.
+  - `alp_vec`: A parameter vector of length 200 that relates the
+    exposure variable to the mediators. The first 8 values are
+    `-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220`
+    with the rest being zeros.
+  - `beta_vec`: A parameter vector of length 200 that relates the
+    mediators to the outcome variable. The first 12 values are
+    `-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034,           -0.5986530, -0.9639383`
+    with the rest being zeros.
+- **Active Mediators**: given the non-zero values in `alp_vec` and
+  `beta_vec`, only the first 8 mediators are truly active
 
 # How to install package from github
 
@@ -191,10 +196,10 @@ significance of each mediator.
 
 #Using HDMT in joint significance testing (Default)
 active_mediators_HDMT <- get_active_med(y, x, M) 
-#> Step 1: Ridge-HOLP Screening   -----  06:00:09 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  06:00:10 PM
-#> Step 3: Joint Significance Testing   -----  06:00:10 PM
-#> Complete!!   06:00:11 PM
+#> Step 1: Ridge-HOLP Screening   -----  06:11:30 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  06:11:30 PM
+#> Step 3: Joint Significance Testing   -----  06:11:31 PM
+#> Complete!!   06:11:31 PM
 
 #Indexes of active mediators identified using HDMT:"
 print(active_mediators_HDMT)
@@ -204,10 +209,10 @@ print(active_mediators_HDMT)
 
 #Using Bonferroni in joint significance testing
 active_mediators_Bonferroni <- get_active_med(y, x, M, pval.adjust='bonferroni') 
-#> Step 1: Ridge-HOLP Screening   -----  06:00:11 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  06:00:11 PM
-#> Step 3: Joint Significance Testing   -----  06:00:12 PM
-#> Complete!!   06:00:12 PM
+#> Step 1: Ridge-HOLP Screening   -----  06:11:31 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  06:11:31 PM
+#> Step 3: Joint Significance Testing   -----  06:11:32 PM
+#> Complete!!   06:11:32 PM
 
 #Indexes of active mediators identified using Bonferroni:"
 print(active_mediators_Bonferroni)
@@ -238,26 +243,26 @@ in the simulated data.
 ``` r
 
 HIMA::dblassoHIMA(x,M,y)
-#> Step 1: Sure Independent Screening ...  (6:00:12 PM)
-#> Step 2: De-biased Lasso Estimates ...   (6:00:12 PM)
-#> Step 3: Joint significance test ...     (6:00:19 PM)
-#> Done!     (6:00:19 PM)
+#> Step 1: Sure Independent Screening ...  (6:11:33 PM)
+#> Step 2: De-biased Lasso Estimates ...   (6:11:33 PM)
+#> Step 3: Joint significance test ...     (6:11:39 PM)
+#> Done!     (6:11:39 PM)
 #>   Index  alpha_hat   alpha_se   beta_hat   beta_se        IDE      rimp
-#> 1     1 -0.4989049 0.06159061 -0.7553381 0.2351410  0.3768419  7.447952
-#> 2     3  0.6351005 0.05489418  1.2139274 0.2752724  0.7709659 15.237469
-#> 3     4  0.5432349 0.05966641 -0.7969289 0.2478265 -0.4329196  8.556278
-#> 4     5  0.7310222 0.04849277 -1.0000087 0.2845326 -0.7310286 14.448143
-#> 5     6 -0.7606745 0.04613191  0.9201336 0.2892166 -0.6999222 13.833353
-#> 6     7 -0.7180654 0.04946084 -1.4384565 0.2707685  1.0329058 20.414485
-#> 7     8 -0.7294041 0.04861566 -1.3916668 0.2796440  1.0150875 20.062321
+#> 1     1 -0.4989049 0.06159061 -0.7732807 0.2412690  0.3857935  7.649170
+#> 2     3  0.6351005 0.05489418  1.1367489 0.2824463  0.7219498 14.314177
+#> 3     4  0.5432349 0.05966641 -0.7836868 0.2542851 -0.4257260  8.440915
+#> 4     5  0.7310222 0.04849277 -1.0145665 0.2919478 -0.7416706 14.705184
+#> 5     6 -0.7606745 0.04613191  0.9049188 0.2967539 -0.6883487 13.647964
+#> 6     7 -0.7180654 0.04946084 -1.4278889 0.2778250  1.0253176 20.329083
+#> 7     8 -0.7294041 0.04861566 -1.4461031 0.2869318  1.0547936 20.913507
 #>           pmax
-#> 1 1.316873e-03
-#> 2 1.034121e-05
-#> 3 1.301393e-03
-#> 4 4.404721e-04
-#> 5 1.465304e-03
-#> 6 1.081337e-07
-#> 7 6.472224e-07
+#> 1 1.350363e-03
+#> 2 5.705878e-05
+#> 3 2.056691e-03
+#> 4 5.105401e-04
+#> 5 2.293054e-03
+#> 6 2.754310e-07
+#> 7 4.658126e-07
 ```
 
 Out of the 8 active mediators,

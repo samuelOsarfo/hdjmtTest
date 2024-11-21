@@ -38,15 +38,14 @@ The `hdjmtTest` package performs high-dimensional mediator screening and testing
 # Structure of ExampleData
 
 The example data provided with the package  contains:
+
 - information for `200` observations and `2000` potential active mediators.
--**Variables**:
-- `M`: A 200x2000 matrix of mediators generated using the compound symmetry covariance structure to introduce high correlation among the mediators with $\rho= 0.8$.
-- `x`: A vector of length 200 representing exposures.
-- `y`: A vector of length 200 representing outcomes.
-- `alp_vec`: A parameter vector of length 200 that relates the exposure variable to the mediators. The first 8 values are 
- `-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220` with the rest being zeros.
-- `beta_vec`: A parameter vector of length 200 that relates the mediators to the outcome variable.  
-`-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034, -0.5986530, -0.9639383` with the rest being zeros.
+- **Variables**:
+  - `M`: A 200x2000 matrix of mediators generated using the compound symmetry covariance structure to introduce high correlation among the mediators   with $\rho= 0.8$.
+  - `x`: A vector of length 200 representing exposures.
+  - `y`: A vector of length 200 representing outcomes.
+  - `alp_vec`: A parameter vector of length 200 that relates the exposure variable to the mediators. The first 8 values are `-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220` with the rest being zeros.
+  - `beta_vec`: A parameter vector of length 200 that relates the mediators to the outcome variable. The first 12 values are  `-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034,           -0.5986530, -0.9639383` with the rest being zeros.
 - **Active Mediators**: given the non-zero values in `alp_vec` and `beta_vec`, only the first 8 mediators are truly active
 
 
