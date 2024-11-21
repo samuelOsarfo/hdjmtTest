@@ -13,22 +13,21 @@ demonstrates how to use the primary functions with a simulated dataset,
 
 # Structure of ExampleData
 
-The example data provided with the package contains:
-
-- `M`: A 200x2000 matrix of mediators generated using the compound
-  symmetry covariance structure to introduce high correlation among the
-  mediators with $\rho= 0.8$.
-- `y`: A vector of length 200 representing outcomes.
-- `x`: A vector of length 200 representing exposures.
-- `alp_vec`: A parameter vector of length 200 that relates the exposure
-  variable to the mediators. The first 8 values are
-  `-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220`
-  with the rest being zeros.
-- `beta_vec`: A parameter vector of length 200 that relates the
-  mediators to the outcome variable.  
-  `-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034, -0.5986530, -0.9639383`
-  with the rest being zeros.
-- 
+The example data provided with the package contains: - information for
+`200` observations and `2000` potential active mediators.
+-**Variables**: - `M`: A 200x2000 matrix of mediators generated using
+the compound symmetry covariance structure to introduce high correlation
+among the mediators with $\rho= 0.8$. - `x`: A vector of length 200
+representing exposures. - `y`: A vector of length 200 representing
+outcomes. - `alp_vec`: A parameter vector of length 200 that relates the
+exposure variable to the mediators. The first 8 values are
+`-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220`
+with the rest being zeros. - `beta_vec`: A parameter vector of length
+200 that relates the mediators to the outcome variable.  
+`-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034, -0.5986530, -0.9639383`
+with the rest being zeros. - **Active Mediators**: given the non-zero
+values in `alp_vec` and `beta_vec`, only the first 8 mediators are truly
+active
 
 # How to install package from github
 
@@ -141,18 +140,18 @@ ao_result <- app_orth(y, x, chosen_med)
 print("Test statistics for selected mediators:")
 #> [1] "Test statistics for selected mediators:"
 print(ao_result$ts)
-#>  [1] -4.15095233  2.44108639  2.94832053 -4.73266486 -5.10694645  2.80375878
-#>  [7] -6.11444188 -5.17296682 -2.36729601 -0.28048591  0.30005125 -1.36110933
-#> [13] -3.04270851  0.40670299 -1.17586654  0.45136926  1.69581446 -0.43245094
-#> [19]  0.04121017
+#>  [1] -4.15677551  2.44451088  2.95245659 -4.73930410 -5.11411075  2.80769204
+#>  [7] -6.12301955 -5.18022373 -2.37061698 -0.28087939  0.30047217 -1.36301877
+#> [13] -3.04697698  0.40727353 -1.17751611  0.45200247  1.69819344 -0.43305761
+#> [19]  0.04126799
 
 print("P-values for selected mediators:")
 #> [1] "P-values for selected mediators:"
 print(ao_result$pval)
-#>  [1] 3.310947e-05 1.464315e-02 3.195056e-03 2.215912e-06 3.274065e-07
-#>  [6] 5.051068e-03 9.689547e-10 2.304059e-07 1.791860e-02 7.791047e-01
-#> [11] 7.641381e-01 1.734791e-01 2.344593e-03 6.842261e-01 2.396482e-01
-#> [16] 6.517234e-01 8.992102e-02 6.654137e-01 9.671283e-01
+#>  [1] 3.227709e-05 1.450487e-02 3.152564e-03 2.144535e-06 3.152224e-07
+#>  [6] 4.989792e-03 9.181842e-10 2.216199e-07 1.775842e-02 7.788029e-01
+#> [11] 7.638170e-01 1.728766e-01 2.311554e-03 6.838071e-01 2.389896e-01
+#> [16] 6.512672e-01 8.947126e-02 6.649729e-01 9.670823e-01
 ```
 
 # Identifying Active Mediators
@@ -192,10 +191,10 @@ significance of each mediator.
 
 #Using HDMT in joint significance testing (Default)
 active_mediators_HDMT <- get_active_med(y, x, M) 
-#> Step 1: Ridge-HOLP Screening   -----  01:53:01 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  01:53:01 PM
-#> Step 3: Joint Significance Testing   -----  01:53:02 PM
-#> Complete!!   01:53:02 PM
+#> Step 1: Ridge-HOLP Screening   -----  06:00:09 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  06:00:10 PM
+#> Step 3: Joint Significance Testing   -----  06:00:10 PM
+#> Complete!!   06:00:11 PM
 
 #Indexes of active mediators identified using HDMT:"
 print(active_mediators_HDMT)
@@ -205,10 +204,10 @@ print(active_mediators_HDMT)
 
 #Using Bonferroni in joint significance testing
 active_mediators_Bonferroni <- get_active_med(y, x, M, pval.adjust='bonferroni') 
-#> Step 1: Ridge-HOLP Screening   -----  01:53:02 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  01:53:02 PM
-#> Step 3: Joint Significance Testing   -----  01:53:04 PM
-#> Complete!!   01:53:04 PM
+#> Step 1: Ridge-HOLP Screening   -----  06:00:11 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  06:00:11 PM
+#> Step 3: Joint Significance Testing   -----  06:00:12 PM
+#> Complete!!   06:00:12 PM
 
 #Indexes of active mediators identified using Bonferroni:"
 print(active_mediators_Bonferroni)
@@ -239,10 +238,10 @@ in the simulated data.
 ``` r
 
 HIMA::dblassoHIMA(x,M,y)
-#> Step 1: Sure Independent Screening ...  (1:53:04 PM)
-#> Step 2: De-biased Lasso Estimates ...   (1:53:04 PM)
-#> Step 3: Joint significance test ...     (1:53:12 PM)
-#> Done!     (1:53:12 PM)
+#> Step 1: Sure Independent Screening ...  (6:00:12 PM)
+#> Step 2: De-biased Lasso Estimates ...   (6:00:12 PM)
+#> Step 3: Joint significance test ...     (6:00:19 PM)
+#> Done!     (6:00:19 PM)
 #>   Index  alpha_hat   alpha_se   beta_hat   beta_se        IDE      rimp
 #> 1     1 -0.4989049 0.06159061 -0.7553381 0.2351410  0.3768419  7.447952
 #> 2     3  0.6351005 0.05489418  1.2139274 0.2752724  0.7709659 15.237469
@@ -271,7 +270,7 @@ The `hdjmtTest` package simplifies high-dimensional mediation analysis,
 providing tools for selecting active mediators under high correlation
 scenarios. Refer to the function documentations for more details.
 
-# References
+# Reference
 
 - Wang, X., & Leng, C. (2016). High dimensional ordinary least squares
   projection for screening variables. Journal of the Royal Statistical
