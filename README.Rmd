@@ -39,7 +39,7 @@ The `hdjmtTest` package performs high-dimensional mediator screening and testing
 
 The example data provided with the package  contains:
 
-- information for `200` observations and `2000` potential active mediators.
+- information on `n = 200` samples and `p = 2000` potential active mediators.
 - **Variables**:
   - `M`: A 200x2000 matrix of mediators generated using the compound symmetry covariance structure to introduce high correlation among the mediators, with $\rho= 0.8$.
   - `x`: A vector of length 200 representing exposures.

@@ -15,7 +15,7 @@ demonstrates how to use the primary functions with a simulated dataset,
 
 The example data provided with the package contains:
 
-- information for `200` observations and `2000` potential active
+- information on `n = 200` samples and `p = 2000` potential active
   mediators.
 - **Variables**:
   - `M`: A 200x2000 matrix of mediators generated using the compound
@@ -145,18 +145,18 @@ ao_result <- app_orth(y, x, chosen_med)
 print("Test statistics for selected mediators:")
 #> [1] "Test statistics for selected mediators:"
 print(ao_result$ts)
-#>  [1] -4.1654393  2.4496059  2.9586103 -4.7491821 -5.1247699  2.8135440
-#>  [7] -6.1357816 -5.1910207 -2.3755580 -0.2814648  0.3010984 -1.3658597
-#> [13] -3.0533277  0.4081224 -1.1799704  0.4529446  1.7017329 -0.4339602
-#> [19]  0.0413540
+#>  [1] -4.15095233  2.44108639  2.94832053 -4.73266486 -5.10694645  2.80375878
+#>  [7] -6.11444188 -5.17296682 -2.36729601 -0.28048591  0.30005125 -1.36110933
+#> [13] -3.04270851  0.40670299 -1.17586654  0.45136926  1.69581446 -0.43245094
+#> [19]  0.04121017
 
 print("P-values for selected mediators:")
 #> [1] "P-values for selected mediators:"
 print(ao_result$pval)
-#>  [1] 3.107535e-05 1.430126e-02 3.090296e-03 2.042410e-06 2.979013e-07
-#>  [6] 4.899868e-03 8.474153e-10 2.091444e-07 1.752244e-02 7.783539e-01
-#> [11] 7.633394e-01 1.719830e-01 2.263186e-03 6.831838e-01 2.380120e-01
-#> [16] 6.505887e-01 8.880544e-02 6.643173e-01 9.670137e-01
+#>  [1] 3.310947e-05 1.464315e-02 3.195056e-03 2.215912e-06 3.274065e-07
+#>  [6] 5.051068e-03 9.689547e-10 2.304059e-07 1.791860e-02 7.791047e-01
+#> [11] 7.641381e-01 1.734791e-01 2.344593e-03 6.842261e-01 2.396482e-01
+#> [16] 6.517234e-01 8.992102e-02 6.654137e-01 9.671283e-01
 ```
 
 # Identifying Active Mediators
@@ -196,10 +196,10 @@ significance of each mediator.
 
 #Using HDMT in joint significance testing (Default)
 active_mediators_HDMT <- get_active_med(y, x, M) 
-#> Step 1: Ridge-HOLP Screening   -----  06:15:33 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  06:15:33 PM
-#> Step 3: Joint Significance Testing   -----  06:15:34 PM
-#> Complete!!   06:15:35 PM
+#> Step 1: Ridge-HOLP Screening   -----  11:01:34 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  11:01:34 PM
+#> Step 3: Joint Significance Testing   -----  11:01:35 PM
+#> Complete!!   11:01:35 PM
 
 #Indexes of active mediators identified using HDMT:"
 print(active_mediators_HDMT)
@@ -209,10 +209,10 @@ print(active_mediators_HDMT)
 
 #Using Bonferroni in joint significance testing
 active_mediators_Bonferroni <- get_active_med(y, x, M, pval.adjust='bonferroni') 
-#> Step 1: Ridge-HOLP Screening   -----  06:15:35 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  06:15:35 PM
-#> Step 3: Joint Significance Testing   -----  06:15:36 PM
-#> Complete!!   06:15:36 PM
+#> Step 1: Ridge-HOLP Screening   -----  11:01:35 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  11:01:35 PM
+#> Step 3: Joint Significance Testing   -----  11:01:36 PM
+#> Complete!!   11:01:36 PM
 
 #Indexes of active mediators identified using Bonferroni:"
 print(active_mediators_Bonferroni)
@@ -243,10 +243,10 @@ in the simulated data.
 ``` r
 
 HIMA::dblassoHIMA(x,M,y)
-#> Step 1: Sure Independent Screening ...  (6:15:36 PM)
-#> Step 2: De-biased Lasso Estimates ...   (6:15:36 PM)
-#> Step 3: Joint significance test ...     (6:15:43 PM)
-#> Done!     (6:15:43 PM)
+#> Step 1: Sure Independent Screening ...  (11:01:37 PM)
+#> Step 2: De-biased Lasso Estimates ...   (11:01:37 PM)
+#> Step 3: Joint significance test ...     (11:01:44 PM)
+#> Done!     (11:01:44 PM)
 #>   Index  alpha_hat   alpha_se   beta_hat   beta_se        IDE      rimp
 #> 1     1 -0.4989049 0.06159061 -0.7680957 0.2401838  0.3832067  7.587938
 #> 2     3  0.6351005 0.05489418  1.1386885 0.2811759  0.7231816 14.319836
