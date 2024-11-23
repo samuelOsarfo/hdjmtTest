@@ -145,18 +145,18 @@ ao_result <- app_orth(y, x, chosen_med)
 print("Test statistics for selected mediators:")
 #> [1] "Test statistics for selected mediators:"
 print(ao_result$ts)
-#>  [1] -4.15095233  2.44108639  2.94832053 -4.73266486 -5.10694645  2.80375878
-#>  [7] -6.11444188 -5.17296682 -2.36729601 -0.28048591  0.30005125 -1.36110933
-#> [13] -3.04270851  0.40670299 -1.17586654  0.45136926  1.69581446 -0.43245094
-#> [19]  0.04121017
+#>  [1] -4.16144899  2.44725925  2.95577605 -4.74463252 -5.11986057  2.81084875
+#>  [7] -6.12990370 -5.18604789 -2.37328227 -0.28119519  0.30081000 -1.36455122
+#> [13] -3.05040272  0.40773143 -1.17884000  0.45251066  1.70010273 -0.43354450
+#> [19]  0.04131438
 
 print("P-values for selected mediators:")
 #> [1] "P-values for selected mediators:"
 print(ao_result$pval)
-#>  [1] 3.310947e-05 1.464315e-02 3.195056e-03 2.215912e-06 3.274065e-07
-#>  [6] 5.051068e-03 9.689547e-10 2.304059e-07 1.791860e-02 7.791047e-01
-#> [11] 7.641381e-01 1.734791e-01 2.344593e-03 6.842261e-01 2.396482e-01
-#> [16] 6.517234e-01 8.992102e-02 6.654137e-01 9.671283e-01
+#>  [1] 3.162346e-05 1.439473e-02 3.118835e-03 2.088852e-06 3.057616e-07
+#>  [6] 4.941101e-03 8.793228e-10 2.148036e-07 1.763078e-02 7.785607e-01
+#> [11] 7.635594e-01 1.723941e-01 2.285347e-03 6.834709e-01 2.384619e-01
+#> [16] 6.509011e-01 8.911160e-02 6.646192e-01 9.670453e-01
 ```
 
 # Identifying Active Mediators
@@ -196,10 +196,10 @@ significance of each mediator.
 
 #Using HDMT in joint significance testing (Default)
 active_mediators_HDMT <- get_active_med(y, x, M) 
-#> Step 1: Ridge-HOLP Screening   -----  12:41:48 AM
-#> Step 2: Approximate Orthogonalization Estimates   -----  12:41:48 AM
-#> Step 3: Joint Significance Testing   -----  12:41:49 AM
-#> Complete!!   12:41:49 AM
+#> Step 1: Ridge-HOLP Screening   -----  01:38:16 AM
+#> Step 2: Approximate Orthogonalization Estimates   -----  01:38:16 AM
+#> Step 3: Joint Significance Testing   -----  01:38:17 AM
+#> Complete!!   01:38:18 AM
 
 #Indexes of active mediators identified using HDMT:"
 print(active_mediators_HDMT)
@@ -209,10 +209,10 @@ print(active_mediators_HDMT)
 
 #Using Bonferroni in joint significance testing
 active_mediators_Bonferroni <- get_active_med(y, x, M, pval.adjust='bonferroni') 
-#> Step 1: Ridge-HOLP Screening   -----  12:41:49 AM
-#> Step 2: Approximate Orthogonalization Estimates   -----  12:41:49 AM
-#> Step 3: Joint Significance Testing   -----  12:41:50 AM
-#> Complete!!   12:41:50 AM
+#> Step 1: Ridge-HOLP Screening   -----  01:38:18 AM
+#> Step 2: Approximate Orthogonalization Estimates   -----  01:38:18 AM
+#> Step 3: Joint Significance Testing   -----  01:38:19 AM
+#> Complete!!   01:38:19 AM
 
 #Indexes of active mediators identified using Bonferroni:"
 print(active_mediators_Bonferroni)
@@ -243,10 +243,10 @@ in the simulated data.
 ``` r
 
 HIMA::dblassoHIMA(x,M,y)
-#> Step 1: Sure Independent Screening ...  (12:41:51 AM)
-#> Step 2: De-biased Lasso Estimates ...   (12:41:51 AM)
-#> Step 3: Joint significance test ...     (12:41:58 AM)
-#> Done!     (12:41:58 AM)
+#> Step 1: Sure Independent Screening ...  (1:38:19 AM)
+#> Step 2: De-biased Lasso Estimates ...   (1:38:19 AM)
+#> Step 3: Joint significance test ...     (1:38:26 AM)
+#> Done!     (1:38:26 AM)
 #>   Index  alpha_hat   alpha_se   beta_hat   beta_se        IDE      rimp
 #> 1     1 -0.4989049 0.06159061 -0.7563224 0.2435494  0.3773330  7.400168
 #> 2     3  0.6351005 0.05489418  1.1853493 0.2870601  0.7528159 14.764053
