@@ -177,7 +177,7 @@ js_test <- function(chosen_ind, pval_alp, pval_beta, method=NULL, alpha = 0.05){
                               exact = 0
       )
 
-      which_sig <- which(fdrcut <= alpha)
+      which_sig <- chosen_ind[which(fdrcut <= alpha)]
 
 
   if(method == 'bonferroni'){
