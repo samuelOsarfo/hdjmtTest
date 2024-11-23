@@ -196,10 +196,10 @@ significance of each mediator.
 
 #Using HDMT in joint significance testing (Default)
 active_mediators_HDMT <- get_active_med(y, x, M) 
-#> Step 1: Ridge-HOLP Screening   -----  01:38:16 AM
-#> Step 2: Approximate Orthogonalization Estimates   -----  01:38:16 AM
-#> Step 3: Joint Significance Testing   -----  01:38:17 AM
-#> Complete!!   01:38:18 AM
+#> Step 1: Ridge-HOLP Screening   -----  01:55:39 AM
+#> Step 2: Approximate Orthogonalization Estimates   -----  01:55:40 AM
+#> Step 3: Joint Significance Testing   -----  01:55:41 AM
+#> Complete!!   01:55:41 AM
 
 #Indexes of active mediators identified using HDMT:"
 print(active_mediators_HDMT)
@@ -209,10 +209,10 @@ print(active_mediators_HDMT)
 
 #Using Bonferroni in joint significance testing
 active_mediators_Bonferroni <- get_active_med(y, x, M, pval.adjust='bonferroni') 
-#> Step 1: Ridge-HOLP Screening   -----  01:38:18 AM
-#> Step 2: Approximate Orthogonalization Estimates   -----  01:38:18 AM
-#> Step 3: Joint Significance Testing   -----  01:38:19 AM
-#> Complete!!   01:38:19 AM
+#> Step 1: Ridge-HOLP Screening   -----  01:55:41 AM
+#> Step 2: Approximate Orthogonalization Estimates   -----  01:55:41 AM
+#> Step 3: Joint Significance Testing   -----  01:55:42 AM
+#> Complete!!   01:55:42 AM
 
 #Indexes of active mediators identified using Bonferroni:"
 print(active_mediators_Bonferroni)
@@ -243,26 +243,26 @@ in the simulated data.
 ``` r
 
 HIMA::dblassoHIMA(x,M,y)
-#> Step 1: Sure Independent Screening ...  (1:38:19 AM)
-#> Step 2: De-biased Lasso Estimates ...   (1:38:19 AM)
-#> Step 3: Joint significance test ...     (1:38:26 AM)
-#> Done!     (1:38:26 AM)
+#> Step 1: Sure Independent Screening ...  (1:55:42 AM)
+#> Step 2: De-biased Lasso Estimates ...   (1:55:42 AM)
+#> Step 3: Joint significance test ...     (1:55:49 AM)
+#> Done!     (1:55:49 AM)
 #>   Index  alpha_hat   alpha_se   beta_hat   beta_se        IDE      rimp
-#> 1     1 -0.4989049 0.06159061 -0.7563224 0.2435494  0.3773330  7.400168
-#> 2     3  0.6351005 0.05489418  1.1853493 0.2870601  0.7528159 14.764053
-#> 3     4  0.5432349 0.05966641 -0.8099887 0.2566040 -0.4400141  8.629456
-#> 4     5  0.7310222 0.04849277 -1.0316096 0.2971431 -0.7541295 14.789815
-#> 5     6 -0.7606745 0.04613191  0.9440030 0.3018338 -0.7180790 14.082801
-#> 6     7 -0.7180654 0.04946084 -1.4149185 0.2823390  1.0160040 19.925638
-#> 7     8 -0.7294041 0.04861566 -1.4266482 0.2918503  1.0406031 20.408069
+#> 1     1 -0.4989049 0.06159061 -0.7553381 0.2351410  0.3768419  7.447952
+#> 2     3  0.6351005 0.05489418  1.2139274 0.2752724  0.7709659 15.237469
+#> 3     4  0.5432349 0.05966641 -0.7969289 0.2478265 -0.4329196  8.556278
+#> 4     5  0.7310222 0.04849277 -1.0000087 0.2845326 -0.7310286 14.448143
+#> 5     6 -0.7606745 0.04613191  0.9201336 0.2892166 -0.6999222 13.833353
+#> 6     7 -0.7180654 0.04946084 -1.4384565 0.2707685  1.0329058 20.414485
+#> 7     8 -0.7294041 0.04861566 -1.3916668 0.2796440  1.0150875 20.062321
 #>           pmax
-#> 1 1.900106e-03
-#> 2 3.639124e-05
-#> 3 1.596364e-03
-#> 4 5.170571e-04
-#> 5 1.762645e-03
-#> 6 5.403066e-07
-#> 7 1.017166e-06
+#> 1 1.316873e-03
+#> 2 1.034121e-05
+#> 3 1.301393e-03
+#> 4 4.404721e-04
+#> 5 1.465304e-03
+#> 6 1.081337e-07
+#> 7 6.472224e-07
 ```
 
 Out of the 8 active mediators,
