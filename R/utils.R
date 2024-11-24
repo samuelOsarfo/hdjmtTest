@@ -30,8 +30,8 @@ comp_alpha <- function(x, chosen_M){
 ####### Code from HDMT for js test ############
 #####################################################
 
-#Dr. Yi
-# null_estimation <- function(input_pvalues, eps = 10^-8){
+#Our modified null_estimation
+# my_null_estimation <- function(input_pvalues, eps = 10^-8){
 #   ## updated function that automatically choose best lambda that result in better behave q-q plot
 #   if (is.null(ncol(input_pvalues)))
 #     stop("input_pvalues should be a matrix or data frame")
@@ -144,7 +144,7 @@ comp_alpha <- function(x, chosen_M){
 
 
 #From HIMA Repo
-null_estimation <- function(input_pvalues, lambda = 0.5) {
+my_null_estimation <- function(input_pvalues, lambda = 0.5) {
   ## input_pvalues is a matrix with 2 columns of p-values, the first column is p-value for exposure-mediator association, the second column is p-value for mediator-outcome association adjusted for exposure
   ## lambda is the threshold for pi_{00} estimation, default 0.5
   # check input
@@ -258,7 +258,7 @@ js_test <- function(chosen_ind, pval_alp, pval_beta, method=NULL, alpha = 0.05){
       input_pvalues <- PA + matrix(stats::runif(N0, 0, 10^{-10}), dim(PA)[1], 2)
 
       # Estimate the proportions of the three component nulls
-      nullprop <- null_estimation(input_pvalues)
+      nullprop <- my_null_estimation(input_pvalues)
 
       fdrcut <- HDMT::fdr_est(nullprop$alpha00,
                               nullprop$alpha01,
