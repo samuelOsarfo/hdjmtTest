@@ -62,7 +62,7 @@ through Bioconductor:
 - **Arguments**:
   - `y`: Outcome vector.
   - `x`: Exposure vector.
-  - `M`: Matrix of mediators.
+  - `M`: `Matrix` or `data.frame` of mediators.
   - `COV.S`: a `data.frame` or `matrix` of covariates (optional).
   - `d`: Desired number of mediators to select (optional). Default value
     is $d= 0.5\cdot n/\log(n)$.
@@ -76,7 +76,7 @@ through Bioconductor:
 - **Arguments**:
   - `y`: Outcome vector.
   - `x`: Exposure vector.
-  - `chosen_M`: Matrix of mediators selected during screening.
+  - `chosen_M`: `Matrix` or `data.frame` of mediators selected during screening.
   - `COV.S`: a `data.frame` or `matrix` of covariates (optional).
   - `k`: Scalar used to compute projection directions (default is 1).
 
@@ -89,7 +89,7 @@ through Bioconductor:
 - **Arguments**:
   - `y`: Outcome vector.
   - `x`: Exposure vector.
-  - `M`: Matrix of mediators.
+  - `M`: `Matrix` or `data.frame` of mediators.
   - `COV.S`: A `data.frame` or `matrix` of covariates (optional).
   - `pval.adjust`: Specifies which method to use for controlling FWER in
     the joint significance testing. Either `HDMT` (default) or
