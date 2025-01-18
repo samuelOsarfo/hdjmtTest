@@ -43,7 +43,7 @@ The example data provided with the package contains:
 ```
 
 If package “qvalue” is not found, please first install “qvalue” package
-through Bioconductor:
+through Bioconductor and run "devtools::install_github('samuelOsarfo/hdjmtTest')" again:
 <https://www.bioconductor.org/packages/release/bioc/html/qvalue.html>
 
 ``` r
