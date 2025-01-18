@@ -52,6 +52,8 @@ through Bioconductor and run "devtools::install_github('samuelOsarfo/hdjmtTest')
 #if (!require("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
 #BiocManager::install("qvalue")
+
+#devtools::install_github('samuelOsarfo/hdjmtTest')
 ```
 
 # Summary of Functions
