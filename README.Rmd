@@ -29,15 +29,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 # Introduction
 
-The `hdjmtTest` package performs high-dimensional mediator screening and testing in the presence of  high correlation among mediators using Ridge-HOLP and Approximate Orthogonalization methods. This vignette demonstrates how to use the primary functions with a simulated dataset, `ExampleData`.
-
+The `hdjmtTest` package performs high-dimensional mediator screening and testing in the presence of high correlation among mediators using Ridge-HOLP and Approximate Orthogonalization methods. In addition to accounting for correlation, the method is designed to detect mediators that exhibit joint effects. This vignette demonstrates how to use the primary functions with a simulated dataset, `ExampleData`.
 
 # Structure of ExampleData
 
-The example data provided with the package  contains:
+The example data provided with the package contains:
 
 - information on `n = 200` samples and `p = 2000` potential active mediators.
 - **Variables**:
@@ -45,11 +43,8 @@ The example data provided with the package  contains:
   - `x`: A vector of length 200 representing exposures.
   - `y`: A vector of length 200 representing outcomes.
   - `alp_vec`: A parameter vector of length 200 that relates the exposure variable to the mediators. The first 8 values are `-0.5127127, 0.6597036, 0.6756640, 0.5235137, 0.9305369, -0.9827865, -0.8941141, -0.9230220` with the rest being zeros.
-  - `beta_vec`: A parameter vector of length 200 that relates the mediators to the outcome variable. The first 12 values are  `-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034,           -0.5986530, -0.9639383` with the rest being zeros.
-- **Active Mediators**: given the non-zero values in `alp_vec` and `beta_vec`, only the first 8 mediators are truly active
-
-
-
+  - `beta_vec`: A parameter vector of length 200 that relates the mediators to the outcome variable. The first 12 values are `-0.8033093, 0.9360975, 0.8185305, -0.7951502, -0.8783739, 0.8940459, -0.6911509, -0.8524771, -0.6812097, -0.8285034, -0.5986530, -0.9639383` with the rest being zeros.
+- **Active Mediators**: given the non-zero values in `alp_vec` and `beta_vec`, only the first 8 mediators are truly active.
 
 # How to install package from github
 
@@ -57,7 +52,6 @@ The example data provided with the package  contains:
 #library(devtools)
 
 #devtools::install_github('samuelOsarfo/hdjmtTest')
-
 ```
 
 If package "qvalue" is not found, please first install "qvalue" package through Bioconductor: https://www.bioconductor.org/packages/release/bioc/html/qvalue.html
@@ -66,9 +60,7 @@ If package "qvalue" is not found, please first install "qvalue" package through 
 #if (!require("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
 #BiocManager::install("qvalue")
-
 ```
-
 
 # Summary of Functions
 
@@ -95,23 +87,24 @@ If package "qvalue" is not found, please first install "qvalue" package through 
   - `COV.S`:  a `data.frame` or  `matrix` of covariates (optional).
   - `k`: Scalar used to compute projection directions (default is 1).
 
-## `get_active_med`
+## `get_active_med.hima`, `get_active_med.mod`, `get_active_med.hdmt`
 
-- **Description**: A wrapper function that combines screening and testing to identify active mediators.
-- **Usage**: `get_active_med(y, x, M, COV.S=NULL,pval.adjust='HDMT',d=NULL, r=1, k=1)`
+- **Description**: These are wrapper functions that combine screening and testing to identify active mediators using different joint-significance test variants.
+- **Usage**: `get_active_med.<variant>(y, x, M, COV.S=NULL, pval.adjust='HDMT', d=NULL, r=1, k=1)`
+- **Variants**:
+  - `get_active_med.hima`: Uses the `null_estimation` function from the original HIMA repository.
+  - `get_active_med.mod`: Uses a modified version of the `null_estimation` function.
+  - `get_active_med.hdmt`: Uses the implementation in the HDMT package.
+
 - **Arguments**:
   - `y`: Outcome vector.
   - `x`: Exposure vector.
   - `M`: Matrix of mediators.
   - `COV.S`:  A `data.frame` or `matrix` of covariates (optional).
-  - `pval.adjust`: Specifies which method to use for controlling FWER in the joint significance testing. Either `HDMT` (default)               or `Bonferroni`.
-  - `d`:  Desired number of mediators to select (optional). Default value is $d= 0.5\cdot n/\log(n)$.
-  - `r`:  Penalty parameter for the Ridge-HOLP. Default value is `1`
-  - `k` : Scalar used to compute projection directions for AO. Default value is `1`.
-
-
-
- 
+  - `pval.adjust`: Specifies which method to use for controlling FWER in the joint significance testing. Either `HDMT` (default) or `Bonferroni`.
+  - `d`: Desired number of mediators to select (optional). Default is $d=  n/\log(n)$.
+  - `r`: Ridge penalty for HOLP (default = 1).
+  - `k`: Scalar for computing projection directions for AO (default = 1).
 
 ```{r}
 # Load the ExampleData
@@ -122,110 +115,70 @@ data(ExampleData)
 y <- ExampleData$y
 x <- ExampleData$x
 M <- ExampleData$M
-
-
 ```
 
 # Mediator Screening using Ridge-HOLP
-
-The `medsc_holp` function performs Ridge-HOLP screening to select potential active mediators based on their association with the outcome and exposure.
 
 ```{r}
 # Perform Ridge-HOLP screening
 chosen_ind <- medsc_holp(y, x, M)
 
-
 print("Indexes of selected mediators:")
 print(chosen_ind)
-
 ```
 
-
 # Fitting Approximate Orthogonalization (AO)
-With the selected mediators, we can use `app_orth` to fit the Approximate Orthogonalization model. This model computes test statistics and p-values for the selected mediators.
 
 ```{r}
 # Apply AO on the chosen mediators
 chosen_med <- M[, medsc_holp(y, x, M)]
 ao_result <- app_orth(y, x, chosen_med)
 
-
-# Print the test statistics and p-values
 print("Test statistics for selected mediators:")
 print(ao_result$ts)
 
 print("P-values for selected mediators:")
 print(ao_result$pval)
-
 ```
 
-
 # Identifying Active Mediators
-The `get_active_med` function integrates screening and testing, identifying active mediators and their corresponding indexes. The steps involved are as follows:
-
-### 1. Mediator Screening with Ridge-HOLP
-The function starts by using the Ridge-HOLP method to reduce the dimensionality of the mediator matrix (`M`). This step ensures that only potential mediators with strong associations with both the exposure (`x`) and the outcome (`y`) are considered for further testing.
-
-### 2. Fitting the AO Model
-After initial screening, the function fits the Approximate Orthogonalization (AO) model to the selected mediators. This fitting produces test statistics and p-values that help determine the significance of each mediator.
-
-### 3. Joint-Significance Test
-- A joint-significance test is performed to identify active mediators using the p-values obtained from both the AO model and the mediator model.
-
-- To control for the family-wise error rate due to multiple testing, Bonferroni/HDMT correction is applied to the p-values.
-
-- **Output**:  Indexes of the mediators that are deemed significant after the joint-significance test.
 
 ```{r}
-# Identify active mediators
+# Using HDMT (HIMA null_estimation)
+active_mediators.hima <- get_active_med.hima(y, x, M)
+print(active_mediators.hima)
 
-#Using HDMT in joint significance testing (Default)
-active_mediators_HDMT <- get_active_med(y, x, M) 
+# Using HDMT (modified null_estimation)
+active_mediators.mod <- get_active_med.mod(y, x, M)
+print(active_mediators.mod)
 
-#Indexes of active mediators identified using HDMT:"
-print(active_mediators_HDMT)
+# Using HDMT package implementation
+active_mediators.hdmt <- get_active_med.hdmt(y, x, M)
+print(active_mediators.hdmt)
 
-
-
-#Using Bonferroni in joint significance testing
-active_mediators_Bonferroni <- get_active_med(y, x, M, pval.adjust='bonferroni') 
-
-#Indexes of active mediators identified using Bonferroni:"
+# Using Bonferroni correction
+active_mediators_Bonferroni <- get_active_med.hima(y, x, M, pval.adjust='bonferroni')
 print(active_mediators_Bonferroni)
 ```
 
-
-
 # Competing packages
-We can perform this test using `HIMA` package as well.
 
 ```{r}
 ## Install the HIMA package
-#install.packages('HIMA')
+# install.packages('HIMA')
 
 suppressMessages(library(HIMA))
 
+HIMA::hima_dblasso(x, M, y)
 ```
 
-The `dblassoHIMA` function in the HIMA package combines the sure independence screening method and de-biased lasso to identify the active mediators. Consider the rcode below for identifying the active mediators in the simulated data.
-
-
-```{r}
-
-HIMA::dblassoHIMA(x,M,y)
-```
-Out of the 8 active mediators, `M[, 1], M[,3], M[,4], M[,5], M[,6], M[,7], M[,8]` were identified as active my HIMA (specifically HIMA2).
-
-
-
+Out of the 8 active mediators, `M[, 1], M[,3], M[,4], M[,5], M[,6], M[,7], M[,8]` were identified as active by HIMA (specifically HIMA2).
 
 # Conclusion
 
-The `hdjmtTest` package simplifies high-dimensional mediation analysis, providing tools for selecting active mediators under high correlation scenarios. Refer to the function documentations for more details.
-
+The `hdjmtTest` package simplifies high-dimensional mediation analysis, providing tools for selecting active mediators under high correlation scenarios. Refer to the function documentation for more details.
 
 # Reference
 
-- Wang, X., & Leng, C. (2016). High dimensional ordinary least squares projection for screening variables. Journal of the Royal Statistical Society Series B: Statistical Methodology, 78(3), 589-611.
-
-- Battey, H. S., & Reid, N. (2023). On inference in high-dimensional regression. Journal of the Royal Statistical Society Series B: Statistical Methodology, 85(1), 149-175.
+- Wang, X., & Leng, C. (2016). High dimensional ordinary least squares projection for screening variables. *Journal of the Royal Statistical Society Series B: Statistical Methodology*, 78(3), 589–611.
+- Battey, H. S., & Reid, N. (2023). On inference in high-dimensional regression. *Journal of the Royal Statistical Society Series B: Statistical Methodology*, 85(1), 149–175.

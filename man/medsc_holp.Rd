@@ -15,7 +15,7 @@ medsc_holp(y, x, M, COV.S = NULL, d = NULL, r = 1)
 
 \item{COV.S}{a \code{data.frame} or \code{matrix} of covariates}
 
-\item{d}{desired number of chosen mediators. Default value is \eqn{d = 0.5 \cdot n/\log(n)}.}
+\item{d}{desired number of chosen mediators. Default value is \eqn{d = \cdot n/\log(n)}.}
 
 \item{r}{scalar for the penalty parameter. Default value is 1.}
 }

@@ -1,11 +1,11 @@
-#' Get Active Mediators
+#' Get Active Mediators :: Null Estimation Function From the HIMA Repository
 #'
 #' @param y  vector of outcomes
 #' @param x vector of exposures
 #' @param M a \code{data.frame} or \code{matrix} of mediators
 #' @param COV.S a \code{data.frame} or \code{matrix} of covariates
-#' @param pval.adjust specifies which method to use for controlling FWER in the joint significance testing. Either \code{'HDMT'} (default) or \code{'Bonferroni'}
-#' @param d the number of screened mediators. Default value is \eqn{d = 0.5 \cdot n/\log(n)}.
+#' @param pval.adjust specifies which method to use for controlling FWER/FDR in the joint significance testing. Either \code{'HDMT'} (default) or \code{'Bonferroni'}
+#' @param d the number of screened mediators. Default value is \eqn{d = \cdot n/\log(n)}.
 #' @param r  a penalty parameter for the Ridge-HOLP. Default value is `1`
 #' @param k  a scalar for computing projection directions for AO. Default value is `1`.
 #'
@@ -19,19 +19,19 @@
 #' M <- ExampleData$M #  'M' is a matrix of mediators in ExampleData
 #'
 #' # Get active mediators
-#' #using HDMT to control FWER (default)
-#' active_mediators_index <- get_active_med(y, x, M)
+#' #using HDMT to control FDR (default)
+#' active_mediators_index <- get_active_med.hima(y, x, M)
 #'
 #' # Print the indexes of active mediators
 #' print(active_mediators_index)
 #'
 #'
 #'#using Bonferroni correction to control FWER
-#' active_mediators_index <- get_active_med(y, x, M, pval.adjust='bonferroni')
+#' active_mediators_index <- get_active_med.hima(y, x, M, pval.adjust='bonferroni')
 #'
 #' #Print the indexes of active mediators
 #'print(active_mediators_index)
-get_active_med <- function(y, x, M, COV.S=NULL, pval.adjust='HDMT', d=NULL, r=1,  k=1){
+get_active_med.hima <- function(y, x, M, COV.S=NULL, pval.adjust='HDMT', d=NULL, r=1,  k=1){
 
   #screen mediators
   message("Step 1: Ridge-HOLP Screening   -----  ", format(Sys.time(), "%I:%M:%S %p"))
@@ -47,7 +47,7 @@ get_active_med <- function(y, x, M, COV.S=NULL, pval.adjust='HDMT', d=NULL, r=1,
 
   #get index for active mediators in chosen mediators
      message("Step 3: Joint Significance Testing   -----  ", format(Sys.time(), "%I:%M:%S %p"))
-     active_index <- js_test(chosen_ind, alp_all$pval[chosen_ind], ao_obj$pval, method=pval.adjust)
+     active_index <- js_test_hima(chosen_ind, alp_all$pval[chosen_ind], ao_obj$pval, method=pval.adjust)
 
   #results
      message("Complete!!   ", format(Sys.time(), "%I:%M:%S %p"))

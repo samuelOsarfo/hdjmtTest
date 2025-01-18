@@ -4,7 +4,7 @@
 #' @param x  n-dimensional vector of exposures
 #' @param M  n by p matrix of mediators
 #' @param COV.S a \code{data.frame} or \code{matrix} of covariates
-#' @param d  desired number of chosen mediators. Default value is \eqn{d = 0.5 \cdot n/\log(n)}.
+#' @param d  desired number of chosen mediators. Default value is \eqn{d = \cdot n/\log(n)}.
 #' @param r  scalar for the penalty parameter. Default value is 1.
 #'
 #' @return A vector for indexes of  the selected mediators.
@@ -40,7 +40,7 @@ medsc_holp <- function(y, x, M, COV.S=NULL, d = NULL, r = 1){
 
 
   if(is.null(d)){
-    d <- ceiling(0.5* n/log(n))
+    d <- ceiling(n/log(n))
   }
 
 
