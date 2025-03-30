@@ -26,7 +26,7 @@ get_active_med.hima(
 
 \item{pval.adjust}{specifies which method to use for controlling FWER/FDR in the joint significance testing. Either \code{'HDMT'} (default) or \code{'Bonferroni'}}
 
-\item{d}{the number of screened mediators. Default value is \eqn{d = \cdot n/\log(n)}.}
+\item{d}{the number of screened mediators. Default value is \eqn{d =  n/\log(n)}.}
 
 \item{r}{a penalty parameter for the Ridge-HOLP. Default value is \code{1}}
 

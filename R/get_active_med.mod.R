@@ -5,7 +5,7 @@
 #' @param M a \code{data.frame} or \code{matrix} of mediators
 #' @param COV.S a \code{data.frame} or \code{matrix} of covariates
 #' @param pval.adjust specifies which method to use for controlling FWER/FDR in the joint significance testing. Either \code{'HDMT'} (default) or \code{'Bonferroni'}
-#' @param d the number of screened mediators. Default value is \eqn{d = \cdot n/\log(n)}.
+#' @param d the number of screened mediators. Default value is \eqn{d =  n/\log(n)}.
 #' @param r  a penalty parameter for the Ridge-HOLP. Default value is `1`
 #' @param k  a scalar for computing projection directions for AO. Default value is `1`.
 #'
