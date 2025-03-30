@@ -33,7 +33,7 @@ app_orth <- function(y, x, chosen_M, COV.S=NULL, k = 1){
   MCX <- cbind(chosen_M, XC)
   q1 <- ncol(MCX)
   q2 <- 0
-  ts <- pval <-bhat<-se_bhat <- rep(NA, q1-1)
+  ts <- pval  <- rep(NA, q1-1)
 
 
 
@@ -43,7 +43,7 @@ app_orth <- function(y, x, chosen_M, COV.S=NULL, k = 1){
     MCX  <- cbind(chosen_M, COV.S, XC)
     q1 <- ncol(MCX)
     q2 <- ncol(COV.S)
-    ts <- pval <- bhat<-se_bhat <- rep(NA, (q1-(q2 + 1)))
+    ts <- pval  <- rep(NA, (q1-(q2 + 1)))
   }
 
   sig_hat <- selectiveInference::estimateSigma(MCX, y)$sigmahat # compute the estimates of standard deviation of random errors
@@ -52,19 +52,16 @@ app_orth <- function(y, x, chosen_M, COV.S=NULL, k = 1){
   # Compute the projection vector as described in Battey and Reid (2023)
   # and the resulting test statistics and p-values for each selected mediator
   for(j in 1:(q1-(q2 + 1))){
+
     # Step 1: Compute projection vector q_v (Equation 13 in the paper)
-    proj_vec <- solve(k * diag(n) + tcrossprod(MCX[, -j])) %*% MCX[, j]
+    proj_vec <- solve(k*diag(n) + tcrossprod(MCX[,-j]))%*%MCX[,j] # dimension : n by 1
 
-    # Step 2: Compute the debiased estimate (Equation 2 in the paper)
-    bhat[j] <- sum(proj_vec * y) / sum(proj_vec * MCX[, j])
+    # compute the test statistic which asymptotically follows a standard normal dist'n
+    ts[j] <- sum(proj_vec*y)/(sig_hat*sqrt(sum(proj_vec**2)))
 
-    # Step 3: Compute standard error (Equation 5 in the paper)
-    se_bhat[j] <- sig_hat * sqrt(sum(proj_vec^2)) / abs(sum(proj_vec * MCX[, j]))
-
-    # Step 4: Compute test statistic and p-value (as in original code)
-    ts[j] <- bhat[j] / se_bhat[j]
-    pval[j] <- 2 *stats:: pnorm(abs(ts[j]), lower.tail = FALSE)
+    # compute the p-value
+    pval[j] <- 2*stats::pnorm(abs(ts[j]), lower.tail = F)
   }
 
-  return(list(bhat = bhat, se_bhat = se_bhat, ts = ts, pval = pval))
+  return(list(ts = ts, pval = pval))
 }
