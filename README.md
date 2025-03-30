@@ -69,14 +69,12 @@ through Bioconductor:
     is $d= n/\log(n)$.
   - `r`: Ridge-HOLP penalty parameter (default is 1).
 
-## `app_orth`, `app_orth_fast`
+## `app_orth`
 
 - **Description**: Fits the Approximate Orthogonalization model to test
   the significance of mediators.
 - **Usage**:  
   `app_orth(y, x, chosen_M, COV.S=NULL, k = 1)`  
-  `app_orth_fast(y, x, chosen_M, COV.S=NULL, k = 1)` — *fast version
-  using Rcpp*
 - **Arguments**:
   - `y`: Outcome vector.
   - `x`: Exposure vector.
@@ -84,20 +82,14 @@ through Bioconductor:
   - `COV.S`: a `data.frame` or `matrix` of covariates (optional).
   - `k`: Scalar used to compute projection directions (default is 1).
 
-## `get_active_med.hima`, `get_active_med.mod`, `get_active_med.hdmt`, `get_active_med.fast`
+## `get_active_med.hima`, `get_active_med.mod`, `get_active_med.hdmt`
 
 - **Description**: These are wrapper functions that combine screening
   and testing to identify active mediators using different
   joint-significance test variants.
-
 - **Usage**:  
   `get_active_med.<variant>(y, x, M, COV.S=NULL, pval.adjust='HDMT', d=NULL, r=1, k=1)`  
-  `get_active_med.fast(y, x, M, COV.S=NULL, pval.adjust='HDMT', variant=1, d=NULL, r=1, k=1)`
-  — *fast version using `app_orth_fast()` and supports multiple null
-  estimation variants*
-
 - **Variants**:
-
   - `get_active_med.hima`: Uses the `null_estimation` function from the
     original HIMA repository.
   - `get_active_med.mod`: Uses a modified version of the
@@ -105,9 +97,7 @@ through Bioconductor:
   - `get_active_med.hdmt`: Uses the implementation in the HDMT package.
   - `get_active_med.fast`: Supports all three methods above and allows
     specifying the `variant` for null estimation.
-
 - **Arguments**:
-
   - `y`: Outcome vector.
   - `x`: Exposure vector.
   - `M`: Matrix of mediators.
@@ -115,9 +105,6 @@ through Bioconductor:
   - `pval.adjust`: Specifies which method to use for controlling FWER or
     FDR in the joint significance testing. Either `HDMT` (default) or
     `Bonferroni`.
-  - `variant`: (Only for `get_active_med.fast`) Specifies which null
-    estimation function to use if `pval.adjust = 'HDMT'`. Use `1`
-    (default) for modified, `2` for original HIMA, and `3` for HDMT.
   - `d`: Desired number of mediators to select (optional). Default is
     $d = n / \log(n)$.
   - `r`: Ridge penalty for HOLP (default = 1).
@@ -178,96 +165,6 @@ print(ao_result$pval)
 #> [26] 6.015467e-01 5.862667e-01 3.915545e-01 6.086542e-02 2.720768e-01
 #> [31] 5.350775e-01 5.091441e-01 1.380425e-01 5.401568e-01 2.720621e-01
 #> [36] 1.144164e-01 8.696254e-01 5.103734e-01
-
-
-# Apply AO using the faster Rcpp implementation
-ao_fast_result <- app_orth_fast(y, x, chosen_med)
-
-print("Test statistics for selected mediators (app_orth_fast):")
-#> [1] "Test statistics for selected mediators (app_orth_fast):"
-print(ao_fast_result$ts)
-#>              [,1]
-#>  [1,] -3.76599233
-#>  [2,]  2.70902943
-#>  [3,]  3.04258272
-#>  [4,] -3.77394804
-#>  [5,] -4.02617274
-#>  [6,]  3.13707320
-#>  [7,] -6.06885892
-#>  [8,] -5.18062567
-#>  [9,] -4.36389214
-#> [10,] -1.38946440
-#> [11,] -0.09359749
-#> [12,]  1.58854626
-#> [13,] -0.94463971
-#> [14,] -0.63375547
-#> [15,] -0.30201335
-#> [16,] -2.75160785
-#> [17,] -2.97709570
-#> [18,] -2.55774896
-#> [19,]  0.66012370
-#> [20,] -0.49296605
-#> [21,]  1.06424382
-#> [22,]  0.96688513
-#> [23,] -2.42389575
-#> [24,]  0.08853741
-#> [25,] -0.29636868
-#> [26,] -0.52441550
-#> [27,]  0.54658658
-#> [28,]  0.86047386
-#> [29,] -1.88250562
-#> [30,]  1.10299963
-#> [31,]  0.62293226
-#> [32,]  0.66300041
-#> [33,]  1.48947667
-#> [34,]  0.61520137
-#> [35,] -1.10303341
-#> [36,]  1.58541583
-#> [37,]  0.16483778
-#> [38,]  0.66107764
-
-print("P-values for selected mediators (app_orth_fast):")
-#> [1] "P-values for selected mediators (app_orth_fast):"
-print(ao_fast_result$pval)
-#>               [,1]
-#>  [1,] 1.658889e-04
-#>  [2,] 6.748035e-03
-#>  [3,] 2.345573e-03
-#>  [4,] 1.606842e-04
-#>  [5,] 5.669205e-05
-#>  [6,] 1.706435e-03
-#>  [7,] 1.288222e-09
-#>  [8,] 2.211429e-07
-#>  [9,] 1.277686e-05
-#> [10,] 1.646916e-01
-#> [11,] 9.254289e-01
-#> [12,] 1.121629e-01
-#> [13,] 3.448428e-01
-#> [14,] 5.262404e-01
-#> [15,] 7.626419e-01
-#> [16,] 5.930349e-03
-#> [17,] 2.909932e-03
-#> [18,] 1.053521e-02
-#> [19,] 5.091745e-01
-#> [20,] 6.220366e-01
-#> [21,] 2.872183e-01
-#> [22,] 3.336015e-01
-#> [23,] 1.535501e-02
-#> [24,] 9.294496e-01
-#> [25,] 7.669485e-01
-#> [26,] 5.999896e-01
-#> [27,] 5.846628e-01
-#> [28,] 3.895279e-01
-#> [29,] 5.976740e-02
-#> [30,] 2.700273e-01
-#> [31,] 5.333290e-01
-#> [32,] 5.073303e-01
-#> [33,] 1.363619e-01
-#> [34,] 5.384217e-01
-#> [35,] 2.700127e-01
-#> [36,] 1.128719e-01
-#> [37,] 8.690717e-01
-#> [38,] 5.085625e-01
 ```
 
 # Identifying Active Mediators
@@ -275,84 +172,38 @@ print(ao_fast_result$pval)
 ``` r
 # Using HDMT (HIMA null_estimation)
 active_mediators.hima <- get_active_med.hima(y, x, M)
-#> Step 1: Ridge-HOLP Screening   -----  02:45:47 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  02:45:47 PM
-#> Step 3: Joint Significance Testing   -----  02:45:48 PM
-#> Complete!!   02:45:48 PM
+#> Step 1: Ridge-HOLP Screening   -----  03:25:58 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  03:25:58 PM
+#> Step 3: Joint Significance Testing   -----  03:25:59 PM
+#> Complete!!   03:25:59 PM
 print(active_mediators.hima)
 #> [1] 1 2 3 4 5 6 7 8
 
 # Using HDMT (modified null_estimation)
 active_mediators.mod <- get_active_med.mod(y, x, M)
-#> Step 1: Ridge-HOLP Screening   -----  02:45:48 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  02:45:49 PM
-#> Step 3: Joint Significance Testing   -----  02:45:50 PM
-#> Complete!!   02:45:50 PM
+#> Step 1: Ridge-HOLP Screening   -----  03:25:59 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  03:25:59 PM
+#> Step 3: Joint Significance Testing   -----  03:26:00 PM
+#> Complete!!   03:26:00 PM
 print(active_mediators.mod)
 #> [1] 1 2 3 4 5 6 7 8
 
 # Using HDMT package implementation
 active_mediators.hdmt <- get_active_med.hdmt(y, x, M)
-#> Step 1: Ridge-HOLP Screening   -----  02:45:50 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  02:45:50 PM
-#> Step 3: Joint Significance Testing   -----  02:45:51 PM
-#> Complete!!   02:45:51 PM
+#> Step 1: Ridge-HOLP Screening   -----  03:26:00 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  03:26:01 PM
+#> Step 3: Joint Significance Testing   -----  03:26:02 PM
+#> Complete!!   03:26:02 PM
 print(active_mediators.hdmt)
 #> [1] 1 2 3 4 5 6 7 8
 
 # Using Bonferroni correction
 active_mediators_Bonferroni <- get_active_med.hima(y, x, M, pval.adjust='bonferroni')
-#> Step 1: Ridge-HOLP Screening   -----  02:45:51 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  02:45:51 PM
-#> Step 3: Joint Significance Testing   -----  02:45:52 PM
-#> Complete!!   02:45:52 PM
+#> Step 1: Ridge-HOLP Screening   -----  03:26:02 PM
+#> Step 2: Approximate Orthogonalization Estimates   -----  03:26:02 PM
+#> Step 3: Joint Significance Testing   -----  03:26:03 PM
+#> Complete!!   03:26:03 PM
 print(active_mediators_Bonferroni)
-#> [1] 1 4 5 7 8
-
-
-
-# get_active_med.fast using modified null_estimation (variant = 1)
-active_fast_mod <- get_active_med.fast(y, x, M, variant = 1)
-#> Step 1: Ridge-HOLP Screening   -----  02:45:52 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  02:45:52 PM
-#> Step 3: Joint Significance Testing   -----  02:45:53 PM
-#> Complete!!   02:45:53 PM
-print("Fast method with variant = 1:")
-#> [1] "Fast method with variant = 1:"
-print(active_fast_mod)
-#> [1] 1 2 3 4 5 6 7 8
-
-# get_active_med.fast using HIMA null_estimation (variant = 2)
-active_fast_hima <- get_active_med.fast(y, x, M, variant = 2)
-#> Step 1: Ridge-HOLP Screening   -----  02:45:53 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  02:45:53 PM
-#> Step 3: Joint Significance Testing   -----  02:45:54 PM
-#> Complete!!   02:45:54 PM
-print("Fast method with variant = 2:")
-#> [1] "Fast method with variant = 2:"
-print(active_fast_hima)
-#> [1] 1 2 3 4 5 6 7 8
-
-# get_active_med.fast using HDMT implementation (variant = 3)
-active_fast_hdmt <- get_active_med.fast(y, x, M, variant = 3)
-#> Step 1: Ridge-HOLP Screening   -----  02:45:54 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  02:45:54 PM
-#> Step 3: Joint Significance Testing   -----  02:45:55 PM
-#> Complete!!   02:45:55 PM
-print("Fast method with variant = 3:")
-#> [1] "Fast method with variant = 3:"
-print(active_fast_hdmt)
-#> [1] 1 2 3 4 5 6 7 8
-
-# Using Bonferroni correction with fast method
-active_fast_bonf <- get_active_med.fast(y, x, M, pval.adjust = 'bonferroni')
-#> Step 1: Ridge-HOLP Screening   -----  02:45:55 PM
-#> Step 2: Approximate Orthogonalization Estimates   -----  02:45:56 PM
-#> Step 3: Joint Significance Testing   -----  02:45:56 PM
-#> Complete!!   02:45:56 PM
-print("Fast method with Bonferroni correction:")
-#> [1] "Fast method with Bonferroni correction:"
-print(active_fast_bonf)
 #> [1] 1 4 5 7 8
 ```
 
@@ -370,10 +221,10 @@ suppressMessages(library(HIMA))
 #> "ndiMatrix" of class "replValueSp"; definition not updated
 
 HIMA::hima_dblasso(x, M, y)
-#> Step 1: Sure Independent Screening ...  (2:45:57 PM)
-#> Step 2: De-biased Lasso Estimates ...   (2:45:57 PM)
-#> Step 3: Joint significance test ...     (2:46:03 PM)
-#> Done!     (2:46:03 PM)
+#> Step 1: Sure Independent Screening ...  (3:26:03 PM)
+#> Step 2: De-biased Lasso Estimates ...   (3:26:03 PM)
+#> Step 3: Joint significance test ...     (3:26:10 PM)
+#> Done!     (3:26:10 PM)
 #>   Index  alpha_hat   alpha_se   beta_hat   beta_se        IDE      rimp
 #> 1     1 -0.4989049 0.06159061 -0.7713661 0.2273450  0.3848383  7.465352
 #> 2     3  0.6351005 0.05489418  1.3000239 0.2661458  0.8256458 16.016431

@@ -14,11 +14,7 @@ Config/testthat/edition: 3
 Imports: 
     HDMT,
     selectiveInference,
-    stats,
-    Rcpp
-LinkingTo: 
-    Rcpp,
-    RcppArmadillo
+    stats
 Depends: 
     R (>= 2.10)
 LazyData: True    
