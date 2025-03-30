@@ -5,23 +5,37 @@
 # Inputs
 # x : n-dimensional vectors of exposure
 # chosen_M : n by q matrix of mediators chosen by some screening method
+# COV.S: n by z matrix or data.frame of covariates
+
 
 # Output
 # ts: a vector of test statistics each of which asymptotically follow std. normal under the null
 # pval: a vector of p-values to test \alpha_{j}=0
 
 
-comp_alpha <- function(x, chosen_M){
+comp_alpha <- function(x, chosen_M, COV.S = NULL) {
 
-  q <- ncol(chosen_M) ; ts <- alpha_est <- pval <- rep(NA, q)
 
-  for(j in 1:q){
-    res <- stats::coef(summary(stats::lm(chosen_M[,j]~x)))
-    ts[j] <- res[2,3] ; pval[j] <- res[2,4];  alpha_est[j] <- res[2, 1]
+  XC <- scale(x)
+
+  p <- ncol(chosen_M)
+  ts <- alpha_est <- pval <- rep(NA, p)
+
+
+  if(!is.null(COV.S)) {
+    COV.S <- scale(COV.S)
+    XC <- cbind(XC, COV.S)
   }
 
-  return(list(ts = ts, pval = pval, alpha_est =alpha_est))
+  for(j in 1:p) {
+    res <- stats::coef(summary(stats::lm(chosen_M[, j] ~ XC)))
+
+    ts[j] <- res[2, 3] ; pval[j] <- res[2, 4]; alpha_est[j] <- res[2, 1]
+  }
+
+  return(list(ts = ts, pval = pval, alpha_est = alpha_est))
 }
+
 
 #####################################################
 ####### Code from HDMT for js test ############
@@ -245,118 +259,130 @@ hima_null_estimation <- function(input_pvalues, lambda = 0.5) {
 # output
 # which_sig: an index set for active mediators that turn out to be significant
 
-js_test_hima <- function(chosen_ind, pval_alp, pval_beta, method=NULL, alpha = 0.05){
+js_test_hima <- function(chosen_ind, pval_alp, pval_beta, method = "HDMT", alpha = 0.05) {
 
-
-      PA <- cbind(pval_alp, pval_beta)
-      P_value <- apply(PA, 1, max) # The joint p-values for SIS variable
-
-      N0 <- dim(PA)[1] * dim(PA)[2]
-      input_pvalues <- PA + matrix(stats::runif(N0, 0, 10^{-10}), dim(PA)[1], 2)
-
-      # Estimate the proportions of the three component nulls
-      nullprop <- hima_null_estimation(input_pvalues)
-
-      fdrcut <- HDMT::fdr_est(nullprop$alpha00,
-                              nullprop$alpha01,
-                              nullprop$alpha10,
-                              nullprop$alpha1,
-                              nullprop$alpha2,
-                              input_pvalues,
-                              exact = 0
-      )
-
-
-      which_sig <- chosen_ind[fdrcut <= alpha]
-
-  if(method == 'bonferroni'){
-       m <- length(pval_beta)
-       adjp_alp <- stats::p.adjust(pval_alp, method = method)
-       adjp_beta <- stats::p.adjust(pval_beta, method = method)
-       max_pval <- sapply(c(1:m), FUN = function(j){max(adjp_alp[j], adjp_beta[j])})
-       which_sig <- chosen_ind[max_pval <= alpha]
+  # Check for valid method
+  method <- tolower(method)
+  if (!method %in% c("hdmt", "bonferroni")) {
+    stop("Invalid method. Choose either 'HDMT' or 'bonferroni'.")
   }
 
+  if (method == "hdmt") {
+    # Add small noise to avoid ties
+    PA <- cbind(pval_alp, pval_beta)
+    N0 <- nrow(PA) * ncol(PA)
+    input_pvalues <- PA + matrix(stats::runif(N0, 0, 1e-10), nrow(PA), 2)
 
+    # Estimate null proportions
+    nullprop <- hima_null_estimation(input_pvalues)
 
-  return(which_sig)
-}
+    # Estimate FDR
+    fdrcut <- HDMT::fdr_est(
+      alpha00 = nullprop$alpha00,
+      alpha01 = nullprop$alpha01,
+      alpha10 = nullprop$alpha10,
+      alpha1 = nullprop$alpha1,
+      alpha2 = nullprop$alpha2,
+      input_pvalues,
+      exact = 0
+    )
 
+    which_sig <- chosen_ind[fdrcut <= alpha]
+  }
 
-
-js_test_mod <- function(chosen_ind, pval_alp, pval_beta, method=NULL, alpha = 0.05){
-
-
-  PA <- cbind(pval_alp, pval_beta)
-  P_value <- apply(PA, 1, max) # The joint p-values for SIS variable
-
-  N0 <- dim(PA)[1] * dim(PA)[2]
-  input_pvalues <- PA + matrix(stats::runif(N0, 0, 10^{-10}), dim(PA)[1], 2)
-
-  # Estimate the proportions of the three component nulls
-  nullprop <- mod_null_estimation(input_pvalues)
-
-  fdrcut <- HDMT::fdr_est(nullprop$alpha00,
-                          nullprop$alpha01,
-                          nullprop$alpha10,
-                          nullprop$alpha1,
-                          nullprop$alpha2,
-                          input_pvalues,
-                          exact = 0
-  )
-
-
-  which_sig <- chosen_ind[fdrcut <= alpha]
-
-  if(method == 'bonferroni'){
-    m <- length(pval_beta)
-    adjp_alp <- stats::p.adjust(pval_alp, method = method)
-    adjp_beta <- stats::p.adjust(pval_beta, method = method)
-    max_pval <- sapply(c(1:m), FUN = function(j){max(adjp_alp[j], adjp_beta[j])})
+  if (method == "bonferroni") {
+    adjp_alp <- stats::p.adjust(pval_alp, method = "bonferroni")
+    adjp_beta <- stats::p.adjust(pval_beta, method = "bonferroni")
+    max_pval <- pmax(adjp_alp, adjp_beta)
     which_sig <- chosen_ind[max_pval <= alpha]
   }
 
-
-
   return(which_sig)
 }
 
 
-js_test_hdmt <- function(chosen_ind, pval_alp, pval_beta, method=NULL, alpha = 0.05){
 
 
-  PA <- cbind(pval_alp, pval_beta)
-  P_value <- apply(PA, 1, max) # The joint p-values for SIS variable
+js_test_mod <- function(chosen_ind, pval_alp, pval_beta, method = "HDMT", alpha = 0.05) {
 
-  N0 <- dim(PA)[1] * dim(PA)[2]
-  input_pvalues <- PA + matrix(stats::runif(N0, 0, 10^{-10}), dim(PA)[1], 2)
+  # Check for valid method
+  method <- tolower(method)
+  if (!method %in% c("hdmt", "bonferroni")) {
+    stop("Invalid method. Choose either 'HDMT' or 'bonferroni'.")
+  }
 
-  # Estimate the proportions of the three component nulls
-  nullprop <- HDMT::null_estimation(input_pvalues)
+  if (method == "hdmt") {
+    # Add small noise to avoid ties
+    PA <- cbind(pval_alp, pval_beta)
+    N0 <- nrow(PA) * ncol(PA)
+    input_pvalues <- PA + matrix(stats::runif(N0, 0, 1e-10), nrow(PA), 2)
 
-  fdrcut <- HDMT::fdr_est(nullprop$alpha00,
-                          nullprop$alpha01,
-                          nullprop$alpha10,
-                          nullprop$alpha1,
-                          nullprop$alpha2,
-                          input_pvalues,
-                          exact = 0
-  )
+    # Estimate null proportions
+    nullprop <- mod_null_estimation(input_pvalues)
 
+    # Estimate FDR
+    fdrcut <- HDMT::fdr_est(
+      alpha00 = nullprop$alpha00,
+      alpha01 = nullprop$alpha01,
+      alpha10 = nullprop$alpha10,
+      alpha1 = nullprop$alpha1,
+      alpha2 = nullprop$alpha2,
+      input_pvalues,
+      exact = 0
+    )
 
-  which_sig <- chosen_ind[fdrcut <= alpha]
+    which_sig <- chosen_ind[fdrcut <= alpha]
+  }
 
-  if(method == 'bonferroni'){
-    m <- length(pval_beta)
-    adjp_alp <- stats::p.adjust(pval_alp, method = method)
-    adjp_beta <- stats::p.adjust(pval_beta, method = method)
-    max_pval <- sapply(c(1:m), FUN = function(j){max(adjp_alp[j], adjp_beta[j])})
+  if (method == "bonferroni") {
+    adjp_alp <- stats::p.adjust(pval_alp, method = "bonferroni")
+    adjp_beta <- stats::p.adjust(pval_beta, method = "bonferroni")
+    max_pval <- pmax(adjp_alp, adjp_beta)
     which_sig <- chosen_ind[max_pval <= alpha]
   }
 
-
-
   return(which_sig)
 }
 
 
+
+js_test_hdmt <- function(chosen_ind, pval_alp, pval_beta, method = "HDMT", alpha = 0.05) {
+
+  # Check for valid method
+  method <- tolower(method)
+  if (!method %in% c("hdmt", "bonferroni")) {
+    stop("Invalid method. Choose either 'HDMT' or 'bonferroni'.")
+  }
+
+  if (method == "hdmt") {
+    # Add small noise to avoid ties
+    PA <- cbind(pval_alp, pval_beta)
+    N0 <- nrow(PA) * ncol(PA)
+    input_pvalues <- PA + matrix(stats::runif(N0, 0, 1e-10), nrow(PA), 2)
+
+    # Estimate null proportions
+    nullprop <- HDMT::null_estimation(input_pvalues)
+
+    # Estimate FDR
+    fdrcut <- HDMT::fdr_est(
+      alpha00 = nullprop$alpha00,
+      alpha01 = nullprop$alpha01,
+      alpha10 = nullprop$alpha10,
+      alpha1 = nullprop$alpha1,
+      alpha2 = nullprop$alpha2,
+      input_pvalues,
+      exact = 0
+    )
+
+    which_sig <- chosen_ind[fdrcut <= alpha]
+  }
+
+  if (method == "bonferroni") {
+    adjp_alp <- stats::p.adjust(pval_alp, method = "bonferroni")
+    adjp_beta <- stats::p.adjust(pval_beta, method = "bonferroni")
+    max_pval <- pmax(adjp_alp, adjp_beta)
+    which_sig <- chosen_ind[max_pval <= alpha]
+  }
+
+  return(which_sig)
+}

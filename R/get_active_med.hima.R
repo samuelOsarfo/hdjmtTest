@@ -43,7 +43,7 @@ get_active_med.hima <- function(y, x, M, COV.S=NULL, pval.adjust='HDMT', d=NULL,
 
 
   #get p-values and test statistics for \alpha_j's in mediator model
-     alp_all <- comp_alpha(x, M)
+     alp_all <- comp_alpha(x, M, COV.S)
 
   #get index for active mediators in chosen mediators
      message("Step 3: Joint Significance Testing   -----  ", format(Sys.time(), "%I:%M:%S %p"))
