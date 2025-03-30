@@ -51,7 +51,7 @@ The example data provided with the package contains:
 ```{r}
 #library(devtools)
 
-#devtools::install_github('samuelOsarfo/hdjmtTest')
+#devtools::install_github('samuelOsarfo/hdjmtTest',force=TRUE)
 ```
 
 If package "qvalue" is not found, please first install "qvalue" package through Bioconductor: https://www.bioconductor.org/packages/release/bioc/html/qvalue.html
@@ -60,6 +60,8 @@ If package "qvalue" is not found, please first install "qvalue" package through 
 #if (!require("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
 #BiocManager::install("qvalue")
+
+#devtools::install_github('samuelOsarfo/hdjmtTest',force=TRUE)
 ```
 
 # Summary of Functions
