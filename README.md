@@ -97,8 +97,6 @@ through Bioconductor:
   - `get_active_med.mod`: Uses a modified version of the
     `null_estimation` function.
   - `get_active_med.hdmt`: Uses the implementation in the HDMT package.
-  - `get_active_med.fast`: Supports all three methods above and allows
-    specifying the `variant` for null estimation.
 - **Arguments**:
   - `y`: Outcome vector.
   - `x`: Exposure vector.
