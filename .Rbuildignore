@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^hdjmtTest\.Rcheck$
+^hdjmtTest.*\.tar\.gz$
+^hdjmtTest.*\.tgz$

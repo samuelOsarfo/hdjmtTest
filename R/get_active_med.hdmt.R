@@ -43,11 +43,12 @@ get_active_med.hdmt <- function(y, x, M, COV.S=NULL, pval.adjust='HDMT', d=NULL,
 
 
   #get p-values and test statistics for \alpha_j's in mediator model
-     alp_all <- comp_alpha(x, M, COV.S)
+     alp_all <- comp_alpha(x, M[,chosen_ind], COV.S)
+
 
   #get index for active mediators in chosen mediators
      message("Step 3: Joint Significance Testing   -----  ", format(Sys.time(), "%I:%M:%S %p"))
-     active_index <- js_test_hdmt(chosen_ind, alp_all$pval[chosen_ind], ao_obj$pval, method=pval.adjust)
+     active_index <- js_test_hdmt(chosen_ind, alp_all$pval, ao_obj$pval, method=pval.adjust)
 
   #results
      message("Complete!!   ", format(Sys.time(), "%I:%M:%S %p"))

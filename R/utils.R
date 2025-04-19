@@ -17,7 +17,7 @@ comp_alpha <- function(x, chosen_M, COV.S = NULL) {
 
 
   XC <- scale(x)
-
+  chosen_M <-scale(chosen_M)
   p <- ncol(chosen_M)
   ts <- alpha_est <- pval <- rep(NA, p)
 
