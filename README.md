@@ -88,7 +88,7 @@ through Bioconductor:
 
 - **Description**: These are wrapper functions that combine screening
   and testing to identify active mediators using different variants of the
-  joint-significance test variants.
+  joint-significance test.
 - **Usage**:  
   `get_active_med.<variant>(y, x, M, COV.S=NULL, pval.adjust='HDMT', d=NULL, r=1, k=1)`  
 - **Variants**:
